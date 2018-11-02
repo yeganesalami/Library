@@ -1,61 +1,31 @@
-import React, { Component } from 'react';
-import Header from './components/Header.jsx'
+import React, { Component } from "react";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
+import "../node_modules/bootstrap/dist/css/bootstrap.css";
+import Header from "../src/components/Header";
+import Library from "../src/components/Library";
+import Book from "../src/components/Book";
+import Author from "../src/components/Author";
+
+const Layout = props => ({
+  render() {
+    return [<Header />, <main>{this.props.children}</main>];
+  }
+});
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <Header />
-        <Content />
-      </div>
+      <BrowserRouter>
+        <Layout>
+          <Switch>
+            <Route exact path="/" component={Library} />
+            <Route exact path="/books" component={Book} />
+            <Route exact path="/authors" component={Author} />
+          </Switch>
+        </Layout>
+      </BrowserRouter>
     );
   }
 }
-
-
-class Content extends Component {
-  state = {
-    title: 'title1',
-    author: 'author1',
-    category: 'cat1',
-    free: 'True'
-  }
-
-  freeBookClasses() {
-    if (this.state.free === 'False') {
-      return 'table-danger'
-    }
-    if (this.state.free === 'True') {
-      return 'table-success'
-    }
-  }
-
-  render() {
-    return (
-      <div class="container">
-        <table class="table m-5">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Category</th>
-              <th>Free</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className={this.freeBookClasses()}>
-              <td scope="row">{this.state.title}</td>
-              <td>{this.state.author}</td>
-              <td>{this.state.category}</td>
-              <td>{this.state.free}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-}
-
 
 export default App;
-
