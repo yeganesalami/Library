@@ -1,12 +1,18 @@
 import React, { Component } from "react";
-import books from "../data/books.json";
+import { connect } from "react-redux";
 
-export default class Library extends Component {
+class Library extends Component {
+  state = {
+    title: "",
+    author: "",
+    description: "",
+    free: "",
+    category: ""
+  };
 
-  handlerClick()  {
-      console.log("clicked")
+  handlerClick() {
+    console.log("clicked");
   }
-
 
   render() {
     return (
@@ -23,27 +29,36 @@ export default class Library extends Component {
             </tr>
           </thead>
           <tbody>
-            {books.map((bookDetails, index) => {
-              return (
-                <tr>
-                  <td scope="row">{bookDetails.id}</td>
-                  <td>{bookDetails.title}</td>
-                  <td>{bookDetails.author}</td>
-                  <td>{bookDetails.category}</td>
-                  <td>{bookDetails.description}</td>
-                  <td>
-                    {bookDetails.free === "false" ? (
-                      <button onClick={this.handlerClick} className="btn btn-outline-success btn-small">
-                        Borrow
-                      </button>
-                    ) : null}
-                  </td>
-                </tr>
-              );
-            })}
+            {this.props.books.map((book, id) => (
+              <tr key={`book_${id}`}>
+                <td />
+                <td>{book.title}</td>
+                <td>{book.author}</td>
+                <td>{book.category}</td>
+                <td>{book.description}</td>
+                <td>
+                  {book.free === "true" ? (
+                    <button
+                      onClick={this.handlerClick}
+                      className="btn btn-outline-success btn-small"
+                    >
+                      <i className="fa fa-hand-o-up" tooltip="borrow"/>
+                    </button>
+                  ) : null}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    books: state.books
+  };
+};
+
+export default connect(mapStateToProps)(Library);

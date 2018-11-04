@@ -28,7 +28,7 @@ export default class Header extends Component {
             <Link className="nav-item nav-link" to="/authors">
               Authors
             </Link>
-            <a className="nav-item nav-link disabled" href="#">
+            <a className="nav-item nav-link disabled" href="">
               Search
             </a>
           </div>
