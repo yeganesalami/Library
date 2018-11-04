@@ -37,41 +37,6 @@ class Book extends Component {
   render() {
     return [
       <div className="container mt-5">
-        <table className="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.books.map((book, id) => (
-              <tr key={`book_${id}`}>
-                <td />
-                <td>{book.title}</td>
-                <td>{book.author}</td>
-                <td>{book.category}</td>
-                <td>{book.description}</td>
-                <td>
-                  {book.free === "true" ? (
-                    <button
-                      onClick={() => this.props.deleteBook(id)}
-                      className="btn btn-outline-danger btn-small"
-                    >
-                      <i class="fa fa-trash-o" aria-hidden="true" />
-                    </button>
-                  ) : null}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>,
-      <div className="container">
         <form onSubmit={this.submitBook}>
           <div className="form-row">
             <div className="form-group col-md-6">
@@ -119,10 +84,45 @@ class Book extends Component {
           </div>
           <div className="form-row">
             <button type="submit" className="btn btn-success btn-small">
-              <i class="fa fa-plus" aria-hidden="true"></i>
+              <i class="fa fa-plus" aria-hidden="true" />
             </button>
           </div>
         </form>
+      </div>,
+      <div className="container mt-5">
+        <table className="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.books.map((book, id) => (
+              <tr key={`book_${id}`}>
+                <td />
+                <td>{book.title}</td>
+                <td>{book.author}</td>
+                <td>{book.category}</td>
+                <td>{book.description}</td>
+                <td>
+                  {book.free === "true" ? (
+                    <button
+                      onClick={() => this.props.deleteBook(id)}
+                      className="btn btn-outline-danger btn-small"
+                    >
+                      <i class="fa fa-trash-o" aria-hidden="true" />
+                    </button>
+                  ) : null}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     ];
   }
