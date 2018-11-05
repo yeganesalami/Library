@@ -10,10 +10,12 @@ import Book from "../src/components/Book";
 import Author from "../src/components/Author";
 
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { createStore,applyMiddleware  } from "redux";
 import library from "./reducers";
+import thunk from 'redux-thunk';
 
-let store = createStore(library);
+
+let store = createStore(library,applyMiddleware(thunk));
 
 const Layout = props => ({
   render() {
