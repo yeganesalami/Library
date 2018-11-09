@@ -1,26 +1,12 @@
-const initialState = [
-  {
-    title: "title1",
-    author: "author1",
-    category: "cat1",
-    free: "false",
-    description:
-      "Lorem ipsum dolor sit amet, doming admodum probatus id quo, pro movet salutandi repudiare ea"
-  },
-  {
-    title: "title2",
-    author: "author2",
-    category: "cat2",
-    free: "true",
-    description:
-      "Lorem ipsum dolor sit amet, doming admodum probatus id quo, pro movet salutandi repudiare ea"
-  }
-];
+const initialState = [];
 
 export default function books(state = initialState, action) {
   let bookList = state.slice();
 
   switch (action.type) {
+    case 'FETCH_BOOKS':
+      return[...state,...action.books];
+
     case "ADD_BOOK":
       return [
         ...state,
