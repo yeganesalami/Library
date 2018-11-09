@@ -1,4 +1,4 @@
-export const fetchBook = () => {
+export const fetchBooks = () => {
   return dispatch => {
     let headers = { "Content-Type": "application/json" };
     return fetch("/api/books/", { headers })
