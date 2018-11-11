@@ -9,36 +9,41 @@ import Library from "../src/components/Library";
 import Book from "../src/components/Book";
 import Author from "../src/components/Author";
 
-import { Provider } from "react-redux";
-import { createStore,applyMiddleware  } from "redux";
-import library from "./reducers";
-import thunk from 'redux-thunk';
+import { connect } from "react-redux";
+import { books } from "./actions";
 
 
-let store = createStore(library,applyMiddleware(thunk));
-
-const Layout = props => ({
+const Layout = () => ({
   render() {
     return [<Header />, <main>{this.props.children}</main>];
   }
 });
 
 class App extends Component {
+  componentDidMount() {
+    this.props.fetchBooks();
+  }
   render() {
     return (
-      <Provider store={store}>
-        <BrowserRouter>
-          <Layout>
-            <Switch>
-              <Route exact path="/" component={Library} />
-              <Route exact path="/books" component={Book} />
-              <Route exact path="/authors" component={Author} />
-            </Switch>
-          </Layout>
-        </BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <Layout>
+          <Switch>
+            <Route exact path="/" component={Library} />
+            <Route exact path="/books" component={Book} />
+            <Route exact path="/authors" component={Author} />
+          </Switch>
+        </Layout>
+      </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchBooks: () => {
+      dispatch(books.fetchBooks());
+    }
+  };
+};
+
+export default connect(null,mapDispatchToProps)(App);

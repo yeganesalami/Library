@@ -11,10 +11,6 @@ class Book extends Component {
     category: ""
   };
 
-  componentDidMount() {
-    this.props.fetchBooks();
-  };
-
   submitBook = e => {
     e.preventDefault();
     this.props.addBook(
@@ -140,9 +136,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchBooks: () => {
-      dispatch(books.fetchBooks());
-    },
     addBook: (title, author, description, free, category) => {
       dispatch(books.addBook(title, author, description, free, category));
     },
