@@ -18,8 +18,9 @@ class Book extends Component {
       this.state.author,
       this.state.description,
       this.state.free,
-      this.state.category
-    );
+      this.state.category,
+      console.log('submitBook() | title: ', this.state.title, 'author: ', this.state.author, 'description: ', this.state.description, 'free: ', this.state.free, 'category: ', this.state.category)
+    )
 
     this.setState({
       title: "",
@@ -84,7 +85,7 @@ class Book extends Component {
           </div>
           <div className="form-row">
             <button type="submit" className="btn btn-success btn-small">
-              <i class="fa fa-plus" aria-hidden="true" />
+              <i className="fa fa-plus" aria-hidden="true" />
             </button>
           </div>
         </form>
@@ -115,7 +116,7 @@ class Book extends Component {
                       onClick={() => this.props.deleteBook(id)}
                       className="btn btn-outline-danger btn-small"
                     >
-                      <i class="fa fa-trash-o" aria-hidden="true" />
+                      <i className="fa fa-trash-o" aria-hidden="true" />
                     </button>
                   ) : null}
                 </td>
@@ -137,16 +138,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addBook: (title, author, description, free, category) => {
-      dispatch(books.addBook(title, author, description, free, category));
+      return dispatch(books.addBook(title, author, description, free, category)),
+        console.log('mapDispatchToProps | add book | title: ', title, 'author: ', author, 'description: ', description, 'free :', free, 'category: ', category);
     },
-
-    updateBook: (id, title, author, description, free, category) => {
-      dispatch(books.addBook(id, title, author, description, free, category));
-    },
-
-    deleteBook: id => {
-      dispatch(books.deleteBook(id));
-    }
   };
 };
 
