@@ -1,16 +1,20 @@
+import axios from 'axios';
+
+export const fetch = (books) => {
+  return {
+    type: "FETCH_BOOKS",
+    books
+  }
+}
+
 export const fetchBooks = () => {
   return dispatch => {
-    let headers = { "Content-Type": "application/json" };
-    return fetch("/api/books/", { headers })
-      .then(res => res.json())
-      .then(books => {
-        return dispatch({
-          type: "FETCH_BOOKS",
-          books
-        });
-      });
-  };
-};
+    return axios.get('/api/books')
+      .then(res => { dispatch(fetch(res.data)) })
+      .catch(err => { throw (err) })
+  }
+}
+
 
 export const addBook = (title, author, description, free, category) => {
   return {
