@@ -13,8 +13,8 @@ export default function books(state = initialState, action) {
     case "DELETE_BOOK":
       // console.log(action.id);
       bookList.splice(action.params.id, 0);
-      // return bookList;
-      return bookList.filter(book => book.id !== action.params.id)
+      return bookList;
+      // return bookList.filter(book => book.id !== action.params.id)
 
     default:
       return state;
