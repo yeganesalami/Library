@@ -1,38 +1,42 @@
-import axios from 'axios';
+import axios from "axios";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
-axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfCookieName = "csrftoken";
 
-export const fetch = (books) => {
+export const fetch = books => {
   return {
     type: "FETCH_BOOKS",
     books
-  }
-}
+  };
+};
 
 export const fetchBooks = () => {
   return dispatch => {
-    return axios.get('/api/books/')
-      .then(res => { dispatch(fetch(res.data)) })
-      .catch(err => { throw (err) })
-  }
-}
-
-
+    return axios
+      .get("/api/books/")
+      .then(res => {
+        dispatch(fetch(res.data));
+      })
+      .catch(err => {
+        throw err;
+      });
+  };
+};
 
 export const addBook = (title, author, description, free, category) => {
   return dispatch => {
-    return axios.post('/api/books/', { title, author, description, free, category })
+    return axios
+      .post("/api/books/", { title, author, description, free, category })
       .then(res => {
-        dispatch(add(res.data))
-      }).
-      catch(
-        err => { throw (err) }
-      )
-  }
-}
+        dispatch(add(res.data));
+      })
+      .catch(err => {
+        throw err;
+      });
+  };
+};
 
-export const add = (data) => {
+export const add = data => {
   return {
     type: "ADD_BOOK",
     payload: {
@@ -42,24 +46,41 @@ export const add = (data) => {
       free: data.free,
       category: data.category
     }
-  }
-}
+  };
+};
 
-// export const addBook = (title, author, description, free, category) => {
-//   return {
-//     type: "ADD_BOOK",
-//     title,
-//     author,
-//     description,
-//     free,
-//     category
-//   };
-// };
-
-export const deleteBook = id => {
+export const del = id => {
   return {
     type: "DELETE_BOOK",
-    id
+    params: {
+      id
+    }
+  };
+};
+
+export const deleteBook = index => {
+  return (dispatch, getState) => {
+    let bookId = getState().books[index].id;
+    return axios
+      .delete(`/api/books/${bookId}/`)
+      .then(res => {
+        dispatch(del(res.data));
+        // console.log("actions/book.js | res.data", dispatch(del(res.data)));
+      })
+      .catch(err => {
+        throw err;
+        console.log("actions/book.js | err", err);
+      });
+    // return fetch(`/api/books/${bookId}/`, { headers, method: "DELETE" }).then(
+    //   res => {
+    //     if (res.ok) {
+    //       return dispatch({
+    //         type: "DELETE_BOOK",
+    //         pk
+    //       });
+    //     }
+    //   }
+    // );
   };
 };
 

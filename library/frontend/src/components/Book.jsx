@@ -19,8 +19,19 @@ class Book extends Component {
       this.state.description,
       this.state.free,
       this.state.category,
-      console.log('submitBook() | title: ', this.state.title, 'author: ', this.state.author, 'description: ', this.state.description, 'free: ', this.state.free, 'category: ', this.state.category)
-    )
+      console.log(
+        "submitBook() | title: ",
+        this.state.title,
+        "author: ",
+        this.state.author,
+        "description: ",
+        this.state.description,
+        "free: ",
+        this.state.free,
+        "category: ",
+        this.state.category
+      )
+    );
 
     this.setState({
       title: "",
@@ -104,7 +115,7 @@ class Book extends Component {
           </thead>
           <tbody>
             {this.props.books.map((book, id) => (
-              <tr key={`book_${id}`}>
+              <tr key={book.id}>
                 <td />
                 <td>{book.title}</td>
                 <td>{book.author}</td>
@@ -138,9 +149,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addBook: (title, author, description, free, category) => {
-      return dispatch(books.addBook(title, author, description, free, category)),
-        console.log('mapDispatchToProps | add book | title: ', title, 'author: ', author, 'description: ', description, 'free :', free, 'category: ', category);
+      return dispatch(
+        books.addBook(title, author, description, free, category)
+      );
     },
+    deleteBook: id => {
+      return dispatch(books.deleteBook(id));
+    }
   };
 };
 
