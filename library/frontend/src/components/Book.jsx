@@ -4,6 +4,7 @@ import { books } from "../actions";
 
 class Book extends Component {
   state = {
+    id: "",
     title: "",
     author: "",
     description: "",
@@ -14,13 +15,16 @@ class Book extends Component {
   submitBook = e => {
     e.preventDefault();
     this.props.addBook(
+      this.state.id,
       this.state.title,
       this.state.author,
       this.state.description,
       this.state.free,
       this.state.category,
       console.log(
-        "submitBook() | title: ",
+        "submitBook() | id :",
+        this.state.id,
+        "title: ",
         this.state.title,
         "author: ",
         this.state.author,
@@ -34,6 +38,7 @@ class Book extends Component {
     );
 
     this.setState({
+      id: "",
       title: "",
       author: "",
       description: "",
@@ -148,9 +153,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addBook: (title, author, description, free, category) => {
+    addBook: (id, title, author, description, free, category) => {
       return dispatch(
-        books.addBook(title, author, description, free, category)
+        books.addBook(id, title, author, description, free, category)
       );
     },
     deleteBook: id => {
