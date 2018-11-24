@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { books } from "../actions";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 class Book extends Component {
   state = {
@@ -47,60 +51,80 @@ class Book extends Component {
 
   render() {
     return [
-      <div className="container mt-5">
+      <Paper
+        style={{
+          marginLeft: 120,
+          marginRight: 120,
+          marginTop: 20,
+          padding: 50
+        }}
+      >
         <form onSubmit={this.submitBook}>
-          <div className="form-row">
-            <div className="form-group col-md-6">
-              <label>Title</label>
-              <input
-                className="form-control"
+          <Grid container direction="row" spacing={24}>
+            <Grid item xs={3}>
+              <TextField
+                label="Title"
+                required
+                fullWidth
                 value={this.state.title}
                 onChange={e => this.setState({ title: e.target.value })}
               />
-            </div>
-            <div className="form-group col-md-6">
-              <label>Author</label>
-              <input
-                className="form-control"
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                label="Author"
+                required
+                fullWidth
                 value={this.state.author}
                 onChange={e => this.setState({ author: e.target.value })}
               />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-4">
-              <label>Description</label>
-              <input
-                className="form-control"
-                value={this.state.description}
-                onChange={e => this.setState({ description: e.target.value })}
-              />
-            </div>
-            <div className="form-group col-md-4">
-              <label>Free</label>
-              <input
-                className="form-control"
-                value={this.state.free}
-                onChange={e => this.setState({ free: e.target.value })}
-              />
-            </div>
-            <div className="form-group col-md-4">
-              <label>Category</label>
-              <input
-                className="form-control"
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                label="Category"
+                required
+                fullWidth
                 value={this.state.category}
                 onChange={e => this.setState({ category: e.target.value })}
               />
-            </div>
-          </div>
-          <div className="form-row">
-            <button type="submit" className="btn btn-success btn-small">
-              <i className="fa fa-plus" aria-hidden="true" />
-            </button>
-          </div>
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                label="Free"
+                required
+                fullWidth
+                value={this.state.free}
+                onChange={e => this.setState({ free: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                label="Description"
+                required
+                multiline
+                rows={4}
+                fullWidth
+                value={this.state.description}
+                onChange={e => this.setState({ description: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" color="primary" type="submit">
+                Add
+              </Button>
+            </Grid>
+          </Grid>
         </form>
-      </div>,
-      <div className="container mt-5">
+      </Paper>,
+      <Paper
+        style={{
+          marginLeft: 120,
+          marginRight: 120,
+          marginTop: 20,
+          marginBottom: 20,
+          padding: 50
+        }}
+      >
         <table className="table table-bordered table-hover">
           <thead>
             <tr>
@@ -134,7 +158,7 @@ class Book extends Component {
             ))}
           </tbody>
         </table>
-      </div>
+      </Paper>
     ];
   }
 }
