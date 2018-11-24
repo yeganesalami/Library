@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { borrowBook } from "../actions/books";
 
 class Library extends Component {
   state = {
@@ -9,10 +10,6 @@ class Library extends Component {
     free: "",
     category: ""
   };
-
-  handlerClick() {
-    console.log("clicked");
-  }
 
   render() {
     return (
@@ -39,10 +36,10 @@ class Library extends Component {
                 <td>
                   {book.free === "true" ? (
                     <button
-                      onClick={this.handlerClick}
+                      onClick={() => this.props.borrowBook(book)}
                       className="btn btn-outline-success btn-small"
                     >
-                      <i className="fa fa-hand-o-up" tooltip="borrow"/>
+                      <i className="fa fa-hand-o-up" tooltip="borrow" />
                     </button>
                   ) : null}
                 </td>
@@ -61,4 +58,24 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Library);
+const mapDispatchToProps = dispatch => {
+  return {
+    borrowBook: book => {
+      return dispatch(
+        borrowBook(
+          book.id,
+          book.title,
+          book.author,
+          book.description,
+          book.free,
+          book.category
+        )
+      );
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Library);

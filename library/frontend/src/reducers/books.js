@@ -14,7 +14,12 @@ export default function books(state = initialState, action) {
       // console.log(action.id);
       bookList.splice(action.params.id, 0);
       return bookList;
-      // return bookList.filter(book => book.id !== action.params.id)
+    // return bookList.filter(book => book.id !== action.params.id)
+
+    case "BOOROW_BOOK":
+      bookList.splice(2,0);
+      return bookList;
+
 
     default:
       return state;

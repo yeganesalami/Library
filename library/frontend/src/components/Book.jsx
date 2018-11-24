@@ -22,17 +22,11 @@ class Book extends Component {
       this.state.free,
       this.state.category,
       console.log(
-        "submitBook() | id :",
         this.state.id,
-        "title: ",
         this.state.title,
-        "author: ",
         this.state.author,
-        "description: ",
         this.state.description,
-        "free: ",
         this.state.free,
-        "category: ",
         this.state.category
       )
     );
