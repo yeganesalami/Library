@@ -1,7 +1,7 @@
 # library
 Library project
 
-cd /library/frontend
+```cd /library/frontend```
 
 
 ```npm install```
@@ -11,7 +11,7 @@ cd /library/frontend
 
 
 
-cd /library
+```cd /library```
 
 
 ```python manage.py runserver ```
