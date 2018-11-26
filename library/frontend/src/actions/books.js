@@ -10,7 +10,7 @@ export const fetch = books => {
   };
 };
 
-export const fetchBooks = () => {
+export const fetchBooks =  () => {
   return dispatch => {
     return axios
       .get("/api/books/")

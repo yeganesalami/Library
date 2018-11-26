@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { books } from "../actions";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+import { Button, TextField, Paper, Grid } from "@material-ui/core";
 
 class Book extends Component {
   state = {
@@ -24,15 +21,7 @@ class Book extends Component {
       this.state.author,
       this.state.description,
       this.state.free,
-      this.state.category,
-      console.log(
-        this.state.id,
-        this.state.title,
-        this.state.author,
-        this.state.description,
-        this.state.free,
-        this.state.category
-      )
+      this.state.category
     );
 
     this.setState({
@@ -45,10 +34,6 @@ class Book extends Component {
     });
   };
 
-  handlerClick() {
-    console.log("clicked");
-  }
-
   render() {
     return [
       <Paper
@@ -60,44 +45,42 @@ class Book extends Component {
         }}
       >
         <form onSubmit={this.submitBook}>
-          <Grid container direction="row" spacing={24}>
-            <Grid item xs={3}>
+          <Grid container sm={12}>
+            <Grid item sm>
               <TextField
                 label="Title"
                 required
-                fullWidth
                 value={this.state.title}
                 onChange={e => this.setState({ title: e.target.value })}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item sm>
               <TextField
                 label="Author"
                 required
-                fullWidth
                 value={this.state.author}
                 onChange={e => this.setState({ author: e.target.value })}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item sm>
               <TextField
                 label="Category"
                 required
-                fullWidth
                 value={this.state.category}
                 onChange={e => this.setState({ category: e.target.value })}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item sm>
               <TextField
                 label="Free"
                 required
-                fullWidth
                 value={this.state.free}
                 onChange={e => this.setState({ free: e.target.value })}
               />
             </Grid>
-            <Grid item xs={3}>
+          </Grid>
+          <Grid container sm={12} style={{ marginTop: 50 }}>
+            <Grid item sm={4}>
               <TextField
                 label="Description"
                 required
@@ -108,7 +91,9 @@ class Book extends Component {
                 onChange={e => this.setState({ description: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12}>
+          </Grid>
+          <Grid container sm={12} style={{ marginTop: 50 }}>
+            <Grid item>
               <Button variant="contained" color="primary" type="submit">
                 Add
               </Button>

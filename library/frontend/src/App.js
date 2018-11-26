@@ -10,18 +10,21 @@ import Book from "../src/components/Book";
 import Author from "../src/components/Author";
 
 import { connect } from "react-redux";
-import { books } from "./actions";
-
+import { books, authors } from "./actions";
 
 const Layout = () => ({
   render() {
-    return [<Header />, <main>{this.props.children}</main>];
+    return [
+      <Header />,
+      <main style={{ marginTop: 100 }}>{this.props.children}</main>
+    ];
   }
 });
 
 class App extends Component {
   componentDidMount() {
     this.props.fetchBooks();
+    this.props.fetchAuthors();
   }
   render() {
     return (
@@ -42,8 +45,14 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchBooks: () => {
       dispatch(books.fetchBooks());
+    },
+    fetchAuthors: () => {
+      dispatch(authors.fetchAuthors());
     }
   };
 };
 
-export default connect(null,mapDispatchToProps)(App);
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);

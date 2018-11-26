@@ -1,39 +1,33 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { AppBar, Toolbar, Button } from "@material-ui/core";
 
 export default class Header extends Component {
   state = {};
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <Link className="navbar-brand" to="/">
-          Library
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav">
-            <Link className="nav-item nav-link active" to="/books">
-              Books <span className="sr-only">(current)</span>
+      <AppBar>
+        <Toolbar>
+          <Button color="primary">
+            <Link to="/" style={{ color: "white" }}>
+              Library
             </Link>
-            <Link className="nav-item nav-link" to="/authors">
+          </Button>
+          <Button color="primary">
+            <Link to="/books" style={{ color: "white" }}>
+              Books
+            </Link>
+          </Button>
+          <Button color="primary">
+            <Link to="/authors" style={{ color: "white" }}>
               Authors
             </Link>
-            <a className="nav-item nav-link disabled" href="">
-              Search
-            </a>
-          </div>
-        </div>
-      </nav>
+          </Button>
+          {/* <Typography variant="title" color="inherit">
+            <a href="" style={{color:"white"}}>Search </a>
+          </Typography> */}
+        </Toolbar>
+      </AppBar>
     );
   }
 }

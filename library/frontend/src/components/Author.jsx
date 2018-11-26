@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { authors } from "../actions";
+import { Button, TextField, Paper, Grid } from "@material-ui/core";
 
 class Author extends Component {
   state = {
+    id: "",
     name: "",
     gender: "",
     birthday: "",
@@ -12,10 +14,10 @@ class Author extends Component {
     description: ""
   };
 
-  submitAuthor = (e) => {
-    
+  submitAuthor = e => {
     e.preventDefault();
     this.props.addAuthor(
+      this.state.id,
       this.state.name,
       this.state.gender,
       this.state.birthday,
@@ -25,6 +27,7 @@ class Author extends Component {
     );
 
     this.setState({
+      id: "",
       name: "",
       gender: "",
       birthday: "",
@@ -32,74 +35,80 @@ class Author extends Component {
       kind: "",
       description: ""
     });
-
   };
 
   render() {
     return [
-      <div className="container mt-5">
+      <Paper
+        style={{
+          marginLeft: 120,
+          marginRight: 120,
+          marginTop: 20,
+          padding: 50
+        }}
+      >
         <form onSubmit={this.submitAuthor}>
-          <div className="form-row">
-            <div className="form-group col-3">
-              <label>Name</label>
-              <input
+          <Grid container sm={12}>
+            <Grid item sm>
+              <TextField
+                label="Name"
+                required
                 value={this.state.name}
-                onChange={(e) => this.setState({ name: e.target.value })}
-                className="form-control"
+                onChange={e => this.setState({ name: e.target.value })}
               />
-            </div>
-            <div className="form-group col-3">
-              <label>Gender</label>
-              <input
+            </Grid>
+            <Grid item sm>
+              <TextField
+                label="Gender"
+                required
                 value={this.state.gender}
                 onChange={e => this.setState({ gender: e.target.value })}
-                className="form-control"
               />
-            </div>
-            <div className="form-group col-3">
-              <label>Birthday</label>
-              <input
+            </Grid>
+            <Grid item sm>
+              <TextField
+                label="Birthday"
+                required
                 value={this.state.birthday}
                 onChange={e => this.setState({ birthday: e.target.value })}
-                className="form-control"
               />
-            </div>
-            <div className="form-group col-3">
-              <label>Born</label>
-              <input
+            </Grid>
+            <Grid item sm>
+              <TextField
+                label="Born"
+                required
                 value={this.state.born}
                 onChange={e => this.setState({ born: e.target.value })}
-                className="form-control"
               />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-2">
-              <label>Kind</label>
-              <input
+            </Grid>
+          </Grid>
+          <Grid container sm={12} style={{ marginTop: 20 }}>
+            <Grid item sm={3}>
+              <TextField
+                label="Kind"
+                required
                 value={this.state.kind}
                 onChange={e => this.setState({ kind: e.target.value })}
-                className="form-control"
               />
-            </div>
-            <div className="form-group col-10">
-              <label>Description</label>
-              <input
+            </Grid>
+            <Grid item sm={3}>
+              <TextField
+                label="Description"
+                required
                 value={this.state.description}
                 onChange={e => this.setState({ description: e.target.value })}
-                type="textarea"
-                row="4"
-                className="form-control"
               />
-            </div>
-          </div>
-          <div className="form-row">
-            <button type="submit" className="btn btn-success btn-small">
-              <i className="fa fa-plus" aria-hidden="true" />
-            </button>
-          </div>
+            </Grid>
+          </Grid>
+          <Grid container sm={12} style={{ marginTop: 20 }}>
+            <Grid item sm>
+              <Button variant="contained" color="primary" type="submit">
+                <i className="fa fa-plus" aria-hidden="true" />
+              </Button>
+            </Grid>
+          </Grid>
         </form>
-      </div>,
+      </Paper>,
       <div className="container mt-5">
         <table className="table table-bordered table-hover">
           <thead>
@@ -149,13 +158,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addAuthor: (name, gender, birthday, born, kind, description) => {
-      dispatch(
-        authors.addAuthor(name, gender, birthday, born, kind, description)
+    addAuthor: (id, name, gender, birthday, born, kind, description) => {
+      return dispatch(
+        authors.addAuthor(id, name, gender, birthday, born, kind, description)
       );
-    },
-    deleteAuthor: id => {
-      dispatch(authors.deleteAuthor(id));
+      // console.log("hi")
     }
   };
 };

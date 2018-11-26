@@ -1,36 +1,14 @@
-const initialState = [
-  {
-    name: "name1",
-    gender: "male",
-    birthDay: "02-09-1998",
-    born: "born1",
-    kind: "kind1",
-    description:
-      "Lorem ipsum dolor sit amet, doming admodum probatus id quo, pro movet salutandi repudiare ea"
-  }
-];
+const initialState = [];
 
 export default function authors(state = initialState, action) {
-  let authorList = state.slice();
+  // let authorList = state.slice();
 
   switch (action.type) {
-    case "DELETE_AUTHOR":
-      authorList.splice(action.id, 1);
-
-      return authorList;
+    case "FETCH_AUTHORS":
+      return [...state, ...action.authors];
 
     case "ADD_AUTHOR":
-      return [
-        ...state,
-        {
-          name: action.name,
-          gender: action.gender,
-          birthDay: action.birthDay,
-          born: action.born,
-          kind: action.kind,
-          description: action.description
-        }
-      ];
+      return [...state, ...action.payload], console.log("hi");
 
     default:
       return state;

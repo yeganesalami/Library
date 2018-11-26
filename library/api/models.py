@@ -10,3 +10,15 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=255)
+    gender = models.CharField(max_length=255)
+    birthday = models.DateField()
+    born = models.CharField(max_length=255)
+    kind = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
