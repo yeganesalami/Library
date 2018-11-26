@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { authors } from "../actions";
-import { Button, TextField, Paper, Grid } from "@material-ui/core";
+import { Button, TextField, Paper, Grid, Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
 
 class Author extends Component {
   state = {
@@ -110,41 +110,40 @@ class Author extends Component {
         </form>
       </Paper>,
       <div className="container mt-5">
-        <table className="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Gender</th>
-              <th>Birthday</th>
-              <th>Born</th>
-              <th>Kind</th>
-              <th>Description</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Birthday</TableCell>
+              <TableCell>Born</TableCell>
+              <TableCell>Kind</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {this.props.authors.map((author, id) => (
-              <tr key={`author_${id}`}>
-                <td />
-                <td>{author.name}</td>
-                <td>{author.gender}</td>
-                <td>{author.birthday}</td>
-                <td>{author.born}</td>
-                <td>{author.kind}</td>
-                <td>{author.description}</td>
-                <td>
-                  <button
+              <TableRow key={`author_${id}`}>
+                <TableCell />
+                <TableCell>{author.name}</TableCell>
+                <TableCell>{author.gender}</TableCell>
+                <TableCell>{author.birthday}</TableCell>
+                <TableCell>{author.born}</TableCell>
+                <TableCell>{author.kind}</TableCell>
+                <TableCell>{author.description}</TableCell>
+                <TableCell>
+                  <Button variant="contained" color="secondary"
                     onClick={() => this.props.deleteAuthor(id)}
-                    className="btn btn-outline-danger btn-small"
                   >
                     <i className="fa fa-trash-o" aria-hidden="true" />
-                  </button>
-                </td>
-              </tr>
+                  </Button>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     ];
   }
