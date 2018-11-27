@@ -1,8 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { books } from "../actions";
-import { TextField, Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, Paper, Typography,Dialog ,DialogTitle,DialogContent,DialogContentText,DialogActions} from "@material-ui/core";
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button,
+  Paper,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from "@material-ui/core";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import CreateBook from "./CreateBook";
 
 class Book extends Component {
   state = {
@@ -12,11 +27,13 @@ class Book extends Component {
     description: "",
     free: "",
     category: "",
-    open: false,
+    open: false
   };
 
-  handleClickOpen = () => {
+  handleClickOpen = id => {
     this.setState({ open: true });
+    let ID = id;
+    console.log("opened", ID);
   };
 
   handleClose = () => {
@@ -46,6 +63,7 @@ class Book extends Component {
 
   render() {
     return [
+      <CreateBook />,
       <Paper
         style={{
           marginLeft: 120,
@@ -54,69 +72,6 @@ class Book extends Component {
           padding: 50
         }}
       >
-        <form onSubmit={this.submitBook}>
-          <Grid container sm={12}>
-            <Grid item sm>
-              <TextField
-                label="Title"
-                required
-                value={this.state.title}
-                onChange={e => this.setState({ title: e.target.value })}
-              />
-            </Grid>
-            <Grid item sm>
-              <TextField
-                label="Author"
-                required
-                value={this.state.author}
-                onChange={e => this.setState({ author: e.target.value })}
-              />
-            </Grid>
-            <Grid item sm>
-              <TextField
-                label="Category"
-                required
-                value={this.state.category}
-                onChange={e => this.setState({ category: e.target.value })}
-              />
-            </Grid>
-            <Grid item sm>
-              <TextField
-                label="Free"
-                required
-                value={this.state.free}
-                onChange={e => this.setState({ free: e.target.value })}
-              />
-            </Grid>
-          </Grid>
-          <Grid container sm={12} style={{ marginTop: 50 }}>
-            <Grid item sm={4}>
-              <TextField
-                label="Description"
-                required
-                multiline
-                rows={4}
-                fullWidth
-                value={this.state.description}
-                onChange={e => this.setState({ description: e.target.value })}
-              />
-            </Grid>
-          </Grid>
-          <Grid container sm={12} style={{ marginTop: 50 }}>
-            <Grid item>
-              <Button variant="contained" color="primary" type="submit">
-                Add
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>,
-      <Paper style={{
-        marginLeft: 120,
-        marginRight: 120,
-        marginTop: 20,
-        padding: 50
-      }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -156,13 +111,19 @@ class Book extends Component {
                 <TableCell>{book.description}</TableCell>
                 <TableCell>
                   {book.free === "true" ? (
-                    <Button variant="contained" color="secondary"
+                    <Button
+                      variant="contained"
+                      color="secondary"
                       // onClick={() => this.props.deleteBook(id)}
-                      onClick ={this.handleClickOpen}
+                      onClick={() => this.handleClickOpen(id)}
                     >
                       <DeleteForeverIcon />
                     </Button>
-                  ) : null}
+                  ) : (
+                    <Button variant="contained" color="secondary" disabled>
+                      <DeleteForeverIcon />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
@@ -170,43 +131,43 @@ class Book extends Component {
         </Table>
       </Paper>,
       <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you Sure You Want To Delete?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleClose} color="primary" autoFocus>
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+        open={this.state.open}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you Sure You Want To Delete?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            // onClick={() => this.props.deleteBook(ID)}
+            color="primary"
+            autoFocus
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     ];
   }
 }
 
 const mapStateToProps = state => {
   return {
-    books: state.books
+    books: state.books,
+    authors: state.authors
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addBook: (id, title, author, description, free, category) => {
-      return dispatch(
-        books.addBook(id, title, author, description, free, category)
-      );
-    },
     deleteBook: id => {
       return dispatch(books.deleteBook(id));
     }

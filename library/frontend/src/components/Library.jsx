@@ -1,9 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { borrowBook } from "../actions/books";
-import { Table, TableHead, TableRow, TableCell, TableBody, Button, Paper, Typography } from "@material-ui/core";
-import NavigationIcon from '@material-ui/icons/Navigation';
-
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button,
+  Paper,
+  Typography
+} from "@material-ui/core";
+import NavigationIcon from "@material-ui/icons/Navigation";
 
 class Library extends Component {
   state = {
@@ -16,12 +24,14 @@ class Library extends Component {
 
   render() {
     return (
-      <Paper style={{
-        marginLeft: 120,
-        marginRight: 120,
-        marginTop: 20,
-        padding: 50
-      }}>
+      <Paper
+        style={{
+          marginLeft: 120,
+          marginRight: 120,
+          marginTop: 20,
+          padding: 50
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -61,10 +71,21 @@ class Library extends Component {
                 <TableCell>{book.description}</TableCell>
                 <TableCell>
                   {book.free === "true" ? (
-                    <Button color="primary" onClick={() => this.props.borrowBook(book)}>
+                    <Button
+                      color="primary"
+                      onClick={() => this.props.borrowBook(book)}
+                    >
                       <NavigationIcon />
                     </Button>
-                  ) : null}
+                  ) : (
+                    <Button
+                      color="primary"
+                      disabled
+                      onClick={() => this.props.borrowBook(book)}
+                    >
+                      <NavigationIcon />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
