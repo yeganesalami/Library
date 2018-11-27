@@ -40,27 +40,6 @@ class Book extends Component {
     this.setState({ open: false });
   };
 
-  submitBook = e => {
-    e.preventDefault();
-    this.props.addBook(
-      this.state.id,
-      this.state.title,
-      this.state.author,
-      this.state.description,
-      this.state.free,
-      this.state.category
-    );
-
-    this.setState({
-      id: "",
-      title: "",
-      author: "",
-      description: "",
-      free: "",
-      category: ""
-    });
-  };
-
   render() {
     return [
       <CreateBook />,

@@ -8,8 +8,10 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableBody
+  TableBody,
+  Paper
 } from "@material-ui/core";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 class Author extends Component {
   state = {
@@ -48,7 +50,14 @@ class Author extends Component {
   render() {
     return [
       <CreateAuthor />,
-      <div className="container mt-5">
+      <Paper
+        style={{
+          marginLeft: 120,
+          marginRight: 120,
+          marginTop: 20,
+          padding: 50
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -78,14 +87,14 @@ class Author extends Component {
                     color="secondary"
                     onClick={() => this.props.deleteAuthor(id)}
                   >
-                    <i className="fa fa-trash-o" aria-hidden="true" />
+                    <DeleteForeverIcon />
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Paper>
     ];
   }
 }
