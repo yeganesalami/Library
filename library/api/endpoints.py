@@ -6,6 +6,7 @@ from .api import BookViewSet,AuthorViewSet
 router = routers.DefaultRouter()
 router.register('books',BookViewSet)
 router.register('authors',AuthorViewSet)
+router.register('members',AuthorViewSet)
 
 
 urlpatterns =[

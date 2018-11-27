@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 
-from .models import Book,Author
-from .serializers import BookSerializer,AuthorSerializer
+from .models import Book,Author,Member
+from .serializers import BookSerializer,AuthorSerializer,MemberSerializer
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -15,3 +15,8 @@ class AuthorViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = AuthorSerializer
 
+
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = MemberSerializer

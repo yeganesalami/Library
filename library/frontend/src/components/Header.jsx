@@ -23,6 +23,11 @@ export default class Header extends Component {
               Authors
             </Link>
           </Button>
+          <Button color="primary">
+            <Link to="/members" style={{ color: "white" }}>
+              Members
+            </Link>
+          </Button>
           {/* <Typography variant="title" color="inherit">
             <a href="" style={{color:"white"}}>Search </a>
           </Typography> */}

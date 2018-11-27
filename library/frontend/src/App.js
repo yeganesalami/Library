@@ -8,6 +8,7 @@ import Header from "../src/components/Header";
 import Library from "../src/components/Library";
 import Book from "../src/components/Book";
 import Author from "../src/components/Author";
+import Createmember from "../src/components/CreateMember";
 
 import { connect } from "react-redux";
 import { books, authors } from "./actions";
@@ -34,6 +35,7 @@ class App extends Component {
             <Route exact path="/" component={Library} />
             <Route exact path="/books" component={Book} />
             <Route exact path="/authors" component={Author} />
+            <Route exact path="/members" component={Createmember} />
           </Switch>
         </Layout>
       </BrowserRouter>
