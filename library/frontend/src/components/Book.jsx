@@ -93,8 +93,8 @@ class Book extends Component {
                     <Button
                       variant="contained"
                       color="secondary"
-                      // onClick={() => this.props.deleteBook(id)}
-                      onClick={() => this.handleClickOpen(id)}
+                      onClick={() => this.props.deleteBook(id)}
+                      // onClick={() => this.handleClickOpen(id)}
                     >
                       <DeleteForeverIcon />
                     </Button>

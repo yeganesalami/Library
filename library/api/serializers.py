@@ -19,4 +19,4 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ('id', 'memberId', 'firstName', 'lastName',
-                  'membarDate', 'expirationDate')
+                  'memberDate', 'expirationDate')

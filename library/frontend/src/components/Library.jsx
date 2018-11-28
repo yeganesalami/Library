@@ -78,11 +78,7 @@ class Library extends Component {
                       <NavigationIcon />
                     </Button>
                   ) : (
-                    <Button
-                      color="primary"
-                      disabled
-                      onClick={() => this.props.borrowBook(book)}
-                    >
+                    <Button color="primary" disabled>
                       <NavigationIcon />
                     </Button>
                   )}

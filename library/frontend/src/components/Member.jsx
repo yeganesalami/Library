@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import moment from "moment";
+
+import { deactiveUser } from "../actions/members";
+
 import Createmember from "./CreateMember";
-import { member } from "../actions";
 import {
   Paper,
   Table,
@@ -10,9 +13,11 @@ import {
   TableCell,
   Typography,
   TableBody,
-  Button
+  Button,
+  IconButton
 } from "@material-ui/core";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+
+import { Close, Refresh } from "@material-ui/icons";
 
 class Member extends Component {
   state = {
@@ -20,7 +25,7 @@ class Member extends Component {
     memberId: "",
     firstName: "",
     lastName: "",
-    membarDate: "",
+    memberDate: "",
     expirationDate: ""
   };
   render() {
@@ -54,7 +59,7 @@ class Member extends Component {
               </TableCell>
               <TableCell>
                 <Typography variant="body2" gutterBottom>
-                  Membar Date
+                  Member Date
                 </Typography>
               </TableCell>
               <TableCell>
@@ -64,7 +69,12 @@ class Member extends Component {
               </TableCell>
               <TableCell>
                 <Typography variant="body2" gutterBottom>
-                  Delete
+                  Active
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body2" gutterBottom>
+                  Renew
                 </Typography>
               </TableCell>
             </TableRow>
@@ -75,17 +85,30 @@ class Member extends Component {
                 <TableCell>{member.memberId}</TableCell>
                 <TableCell>{member.firstName}</TableCell>
                 <TableCell>{member.lastName}</TableCell>
-                <TableCell>{member.membarDate}</TableCell>
+                <TableCell>{member.memberDate}</TableCell>
                 <TableCell>{member.expirationDate}</TableCell>
                 <TableCell>
-                  {member.membarDate === Date.now() ? (
-                    <Button variant="contained" color="secondary">
-                      <DeleteForeverIcon />
-                    </Button>
+                  {moment(member.expirationDate).isAfter(Date()) ? (
+                    <IconButton
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => this.props.deactiveUser(member)}
+                    >
+                      <Close fontSize="small" />
+                    </IconButton>
                   ) : (
-                    <Button variant="contained" color="secondary" disabled>
-                      <DeleteForeverIcon />
-                    </Button>
+                    <Button disabled>deactive</Button>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {moment(member.expirationDate).isAfter(Date()) ? (
+                    <IconButton disabled>
+                      <Refresh fontSize="small" />
+                    </IconButton>
+                  ) : (
+                    <IconButton variant="contained" color="primary">
+                      <Refresh fontSize="small" />
+                    </IconButton>
                   )}
                 </TableCell>
               </TableRow>
@@ -103,7 +126,24 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    deactiveUser: member => {
+      return dispatch(
+        deactiveUser(
+          member.id,
+          member.memberId,
+          member.firstName,
+          member.lastName,
+          member.memberDate,
+          member.expirationDate
+        )
+      );
+    }
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Member);

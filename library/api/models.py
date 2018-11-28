@@ -28,7 +28,7 @@ class Member(models.Model):
     memberId = models.CharField(max_length=255)
     firstName = models.CharField(max_length=255)
     lastName = models.CharField(max_length=255)
-    membarDate = models.DateField()
+    memberDate = models.DateField()
     expirationDate = models.DateField()
 
     def __str__(self):
