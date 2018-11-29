@@ -20,7 +20,11 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 
 import { Close, Refresh } from "@material-ui/icons";
@@ -33,11 +37,12 @@ class Member extends Component {
     lastName: "",
     memberDate: "",
     expirationDate: "",
+    month: "3",
     open: false,
     openRenew: false
   };
 
-  handleClickOpen = data => {
+  handleClickOpenDeactive = data => {
     this.setState({
       open: true,
       id: data.id,
@@ -80,7 +85,8 @@ class Member extends Component {
       this.state.firstName,
       this.state.lastName,
       this.state.memberDate,
-      this.state.expirationDate
+      this.state.expirationDate,
+      this.state.month
     );
     this.setState({ openRenew: false });
   };
@@ -154,7 +160,7 @@ class Member extends Component {
                       variant="contained"
                       color="secondary"
                       // onClick={() => this.props.deactiveMember(member)}
-                      onClick={() => this.handleClickOpen(member)}
+                      onClick={() => this.handleClickOpenDeactive(member)}
                     >
                       <Close fontSize="small" />
                     </IconButton>
@@ -212,7 +218,23 @@ class Member extends Component {
         <DialogTitle id="alert-dialog-title">{"Renew"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are You Sure You Want To <b>renew</b> Member?
+            Please select Membership Date
+            <FormControl fullWidth>
+              <InputLabel htmlFor="monthId">Month</InputLabel>
+              <Select
+                required
+                value={this.state.month}
+                onChange={e => this.setState({ month: e.target.value })}
+                inputProps={{
+                  name: "month",
+                  id: "monthId"
+                }}
+              >
+                <MenuItem value={"3"}>3 Month</MenuItem>
+                <MenuItem value={"6"}>6 month</MenuItem>
+                <MenuItem value={"12"}>12 Month</MenuItem>
+              </Select>
+            </FormControl>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -220,7 +242,7 @@ class Member extends Component {
             Cancel
           </Button>
           <Button onClick={this.handleRenew} color="primary" autoFocus>
-            Deactive
+            Avtive
           </Button>
         </DialogActions>
       </Dialog>
@@ -261,7 +283,8 @@ const mapDispatchToProps = dispatch => {
       firstName,
       lastName,
       memberDate,
-      expirationDate
+      expirationDate,
+      month
     ) => {
       return dispatch(
         renewMember(
@@ -270,7 +293,8 @@ const mapDispatchToProps = dispatch => {
           firstName,
           lastName,
           memberDate,
-          expirationDate
+          expirationDate,
+          month
         )
       );
     }

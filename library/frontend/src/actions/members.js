@@ -74,12 +74,26 @@ export const renewMember = (
   firstName,
   lastName,
   memberDate,
-  expirationDate
+  expirationDate,
+  month
 ) => {
   return dispatch => {
-    expirationDate = moment()
-      .add(1, "year")
-      .format("YYYY-MM-DD");
+    if (month === "3") {
+      expirationDate = moment()
+        .add(3, "months")
+        .format("YYYY-MM-DD");
+    }
+    if (month === "6") {
+      expirationDate = moment()
+        .add(6, "months")
+        .format("YYYY-MM-DD");
+    }
+    if (month === "12") {
+      expirationDate = moment()
+        .add(1, "year")
+        .format("YYYY-MM-DD");
+    }
+
     return axios
       .put(`/api/members/${id}/`, {
         id,
