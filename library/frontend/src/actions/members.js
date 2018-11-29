@@ -25,7 +25,7 @@ export const fetchMembers = () => {
   };
 };
 
-export const deactiveUser = (
+export const deactiveMember = (
   id,
   memberId,
   firstName,
@@ -45,7 +45,7 @@ export const deactiveUser = (
         expirationDate
       })
       .then(res => {
-        dispatch(deactive(res.data)), console.log(res.data);
+        dispatch(deactive(res.data));
       })
       .catch(err => {
         throw err;
@@ -56,6 +56,48 @@ export const deactiveUser = (
 export const deactive = data => {
   return {
     type: "DEACTIVE_MEMBER",
+    payload: {
+      id: data.id,
+      memberId: data.memberId,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      memberDate: data.memberDate,
+      expirationDate: data.expirationDate
+    }
+  };
+};
+
+export const renewMember = (
+  id,
+  memberId,
+  firstName,
+  lastName,
+  memberDate,
+  expirationDate
+) => {
+  return dispatch => {
+    expirationDate = '2020-10-10';
+    return axios
+      .put(`/api/members/${id}/`, {
+        id,
+        memberId,
+        firstName,
+        lastName,
+        memberDate,
+        expirationDate
+      })
+      .then(res => {
+        dispatch(renew(res.data));
+      })
+      .catch(err => {
+        throw err;
+      });
+  };
+};
+
+export const renew = data => {
+  return {
+    type: "RENEW_MEMBER",
     payload: {
       id: data.id,
       memberId: data.memberId,

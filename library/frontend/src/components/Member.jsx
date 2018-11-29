@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 
-import { deactiveUser } from "../actions/members";
+import { deactiveMember } from "../actions/members";
+import { renewMember } from "../actions/members";
 
 import Createmember from "./CreateMember";
 import {
@@ -92,7 +93,7 @@ class Member extends Component {
                     <IconButton
                       variant="contained"
                       color="secondary"
-                      onClick={() => this.props.deactiveUser(member)}
+                      onClick={() => this.props.deactiveMember(member)}
                     >
                       <Close fontSize="small" />
                     </IconButton>
@@ -106,7 +107,11 @@ class Member extends Component {
                       <Refresh fontSize="small" />
                     </IconButton>
                   ) : (
-                    <IconButton variant="contained" color="primary">
+                    <IconButton
+                      variant="contained"
+                      color="primary"
+                      onClick={() => this.props.renewMember(member)}
+                    >
                       <Refresh fontSize="small" />
                     </IconButton>
                   )}
@@ -128,9 +133,21 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    deactiveUser: member => {
+    deactiveMember: member => {
       return dispatch(
-        deactiveUser(
+        deactiveMember(
+          member.id,
+          member.memberId,
+          member.firstName,
+          member.lastName,
+          member.memberDate,
+          member.expirationDate
+        )
+      );
+    },
+    renewMember: member => {
+      return dispatch(
+        renewMember(
           member.id,
           member.memberId,
           member.firstName,

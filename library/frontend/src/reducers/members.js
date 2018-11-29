@@ -7,8 +7,11 @@ export default function members(state = initialState, action) {
     case "FETCH_MEMBERS":
       return [...state, ...action.members];
 
-    case "DEACTIVE_USER":
-      return memberList
+    case "DEACTIVE_MEMBER":
+      return memberList;
+
+    case "RENEW_MEMBER":
+      return memberList;
 
     default:
       return state;
