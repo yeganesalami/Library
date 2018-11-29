@@ -33,7 +33,8 @@ class Member extends Component {
     lastName: "",
     memberDate: "",
     expirationDate: "",
-    open: false
+    open: false,
+    openRenew: false
   };
 
   handleClickOpen = data => {
@@ -49,7 +50,6 @@ class Member extends Component {
   };
 
   handleDeactive = () => {
-    console.log(this.state.id);
     this.props.deactiveMember(
       this.state.id,
       this.state.memberId,
@@ -61,8 +61,32 @@ class Member extends Component {
     this.setState({ open: false });
   };
 
+  handleclickOpenRenew = data => {
+    this.setState({
+      openRenew: true,
+      id: data.id,
+      memberId: data.memberId,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      memberDate: data.memberDate,
+      expirationDate: data.expirationDate
+    });
+  };
+
+  handleRenew = () => {
+    this.props.renewMember(
+      this.state.id,
+      this.state.memberId,
+      this.state.firstName,
+      this.state.lastName,
+      this.state.memberDate,
+      this.state.expirationDate
+    );
+    this.setState({ openRenew: false });
+  };
+
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, openRenew: false });
   };
 
   render() {
@@ -147,7 +171,7 @@ class Member extends Component {
                     <IconButton
                       variant="contained"
                       color="primary"
-                      onClick={() => this.props.renewMember(member)}
+                      onClick={() => this.handleclickOpenRenew(member)}
                     >
                       <Refresh fontSize="small" />
                     </IconButton>
@@ -175,6 +199,27 @@ class Member extends Component {
             Cancel
           </Button>
           <Button onClick={this.handleDeactive} color="primary" autoFocus>
+            Deactive
+          </Button>
+        </DialogActions>
+      </Dialog>,
+      <Dialog
+        open={this.state.openRenew}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Renew"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are You Sure You Want To <b>renew</b> Member?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleRenew} color="primary" autoFocus>
             Deactive
           </Button>
         </DialogActions>
@@ -210,15 +255,22 @@ const mapDispatchToProps = dispatch => {
         )
       );
     },
-    renewMember: member => {
+    renewMember: (
+      id,
+      memberId,
+      firstName,
+      lastName,
+      memberDate,
+      expirationDate
+    ) => {
       return dispatch(
         renewMember(
-          member.id,
-          member.memberId,
-          member.firstName,
-          member.lastName,
-          member.memberDate,
-          member.expirationDate
+          id,
+          memberId,
+          firstName,
+          lastName,
+          memberDate,
+          expirationDate
         )
       );
     }
