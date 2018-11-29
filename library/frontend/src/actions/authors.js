@@ -51,6 +51,7 @@ export const addAuthor = (
       });
   };
 };
+
 export const add = data => {
   return {
     type: "ADD_AUTHOR",
@@ -66,9 +67,24 @@ export const add = data => {
   };
 };
 
-export const deleteAuthor = id => {
+export const del = id => {
   return {
     type: "DELETE_AUTHOR",
-    id
+    params: {
+      id
+    }
+  };
+};
+
+export const deleteAuthor = id => {
+  return dispatch => {
+    return axios
+      .delete(`/api/authors/${id}/`)
+      .then(res => {
+        dispatch(del(res.data));
+      })
+      .catch(err => {
+        throw err;
+      });
   };
 };

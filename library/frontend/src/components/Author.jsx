@@ -9,7 +9,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Paper
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
@@ -21,30 +26,30 @@ class Author extends Component {
     birthday: "",
     born: "",
     kind: "",
-    description: ""
+    description: "",
+    open: false
   };
 
-  submitAuthor = e => {
-    e.preventDefault();
-    this.props.addAuthor(
-      this.state.id,
-      this.state.name,
-      this.state.gender,
-      this.state.birthday,
-      this.state.born,
-      this.state.kind,
-      this.state.description
-    );
-
+  handleClickOpen = data => {
     this.setState({
-      id: "",
-      name: "",
-      gender: "",
-      birthday: "",
-      born: "",
-      kind: "",
-      description: ""
+      open: true,
+      id: data.id,
+      name: data.name,
+      gender: data.gender,
+      birthday: data.birthday,
+      born: data.born,
+      kind: data.kind,
+      description: data.description
     });
+  };
+
+  handleDelete = () => {
+    this.props.deleteAuthor(this.state.id);
+    this.setState({ open: false });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
@@ -85,7 +90,7 @@ class Author extends Component {
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => this.props.deleteAuthor(id)}
+                    onClick={() => this.handleClickOpen(author)}
                   >
                     <DeleteForeverIcon />
                   </Button>
@@ -94,7 +99,28 @@ class Author extends Component {
             ))}
           </TableBody>
         </Table>
-      </Paper>
+      </Paper>,
+      <Dialog
+        open={this.state.open}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are You Sure You Want To Delete?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleDelete} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     ];
   }
 }
@@ -107,10 +133,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addAuthor: (id, name, gender, birthday, born, kind, description) => {
-      return dispatch(
-        authors.addAuthor(id, name, gender, birthday, born, kind, description)
-      );
+    deleteAuthor: id => {
+      return dispatch(authors.deleteAuthor(id));
     }
   };
 };

@@ -1,7 +1,7 @@
 const initialState = [];
 
 export default function authors(state = initialState, action) {
-  // let authorList = state.slice();
+  let authorList = state.slice();
 
   switch (action.type) {
     case "FETCH_AUTHORS":
@@ -9,6 +9,10 @@ export default function authors(state = initialState, action) {
 
     case "ADD_AUTHOR":
       return [...state, ...action.payload];
+
+    case "ADELETE_AUTHOR":
+      authorList.splice(action.params.id, 0);
+      return authorList;
 
     default:
       return state;
