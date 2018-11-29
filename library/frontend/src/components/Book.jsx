@@ -30,10 +30,21 @@ class Book extends Component {
     open: false
   };
 
-  handleClickOpen = id => {
-    this.setState({ open: true });
-    let ID = id;
-    console.log("opened", ID);
+  handleClickOpen = data => {
+    this.setState({
+      open: true,
+      id: data.id,
+      title: data.title,
+      author: data.author,
+      description: data.description,
+      free: data.free,
+      category: data.category
+    });
+  };
+
+  handleDelete = () => {
+    this.props.deleteBook(this.state.id);
+    this.setState({ open: false });
   };
 
   handleClose = () => {
@@ -89,12 +100,12 @@ class Book extends Component {
                 <TableCell>{book.category}</TableCell>
                 <TableCell>{book.description}</TableCell>
                 <TableCell>
-                  {book.free === "true" ? (
+                  {book.free === "free" ? (
                     <Button
                       variant="contained"
                       color="secondary"
-                      onClick={() => this.props.deleteBook(id)}
-                      // onClick={() => this.handleClickOpen(id)}
+                      // onClick={() => this.props.deleteBook(id)}
+                      onClick={() => this.handleClickOpen(book)}
                     >
                       <DeleteForeverIcon />
                     </Button>
@@ -118,18 +129,14 @@ class Book extends Component {
         <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you Sure You Want To Delete?
+            Are You Sure You Want To Delete?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          <Button
-            // onClick={() => this.props.deleteBook(ID)}
-            color="primary"
-            autoFocus
-          >
+          <Button onClick={this.handleDelete} color="primary" autoFocus>
             Delete
           </Button>
         </DialogActions>

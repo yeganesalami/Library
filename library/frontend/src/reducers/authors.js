@@ -8,7 +8,7 @@ export default function authors(state = initialState, action) {
       return [...state, ...action.authors];
 
     case "ADD_AUTHOR":
-      return [...state, ...action.payload], console.log("hi");
+      return [...state, ...action.payload];
 
     default:
       return state;

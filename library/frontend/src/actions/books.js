@@ -59,29 +59,17 @@ export const del = id => {
   };
 };
 
-export const deleteBook = index => {
+export const deleteBook = id => {
   return (dispatch, getState) => {
-    let bookId = getState().books[index].id;
+    // let bookId = getState().books[index].id;
     return axios
-      .delete(`/api/books/${bookId}/`)
+      .delete(`/api/books/${id}/`)
       .then(res => {
         dispatch(del(res.data));
-        // console.log("actions/book.js | res.data", dispatch(del(res.data)));
       })
       .catch(err => {
         throw err;
-        console.log("actions/book.js | err", err);
       });
-    // return fetch(`/api/books/${bookId}/`, { headers, method: "DELETE" }).then(
-    //   res => {
-    //     if (res.ok) {
-    //       return dispatch({
-    //         type: "DELETE_BOOK",
-    //         pk
-    //       });
-    //     }
-    //   }
-    // );
   };
 };
 
