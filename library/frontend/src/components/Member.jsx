@@ -15,7 +15,12 @@ import {
   Typography,
   TableBody,
   Button,
-  IconButton
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core";
 
 import { Close, Refresh } from "@material-ui/icons";
@@ -27,8 +32,39 @@ class Member extends Component {
     firstName: "",
     lastName: "",
     memberDate: "",
-    expirationDate: ""
+    expirationDate: "",
+    open: false
   };
+
+  handleClickOpen = data => {
+    this.setState({
+      open: true,
+      id: data.id,
+      memberId: data.memberId,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      memberDate: data.memberDate,
+      expirationDate: data.expirationDate
+    });
+  };
+
+  handleDeactive = () => {
+    console.log(this.state.id);
+    this.props.deactiveMember(
+      this.state.id,
+      this.state.memberId,
+      this.state.firstName,
+      this.state.lastName,
+      this.state.memberDate,
+      this.state.expirationDate
+    );
+    this.setState({ open: false });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     return [
       <Createmember />,
@@ -93,7 +129,8 @@ class Member extends Component {
                     <IconButton
                       variant="contained"
                       color="secondary"
-                      onClick={() => this.props.deactiveMember(member)}
+                      // onClick={() => this.props.deactiveMember(member)}
+                      onClick={() => this.handleClickOpen(member)}
                     >
                       <Close fontSize="small" />
                     </IconButton>
@@ -120,7 +157,28 @@ class Member extends Component {
             ))}
           </TableBody>
         </Table>
-      </Paper>
+      </Paper>,
+      <Dialog
+        open={this.state.open}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are You Sure You Want To <b>Deactive</b> Member?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleDeactive} color="primary" autoFocus>
+            Deactive
+          </Button>
+        </DialogActions>
+      </Dialog>
     ];
   }
 }
@@ -133,15 +191,22 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    deactiveMember: member => {
+    deactiveMember: (
+      id,
+      memberId,
+      firstName,
+      lastName,
+      memberDate,
+      expirationDate
+    ) => {
       return dispatch(
         deactiveMember(
-          member.id,
-          member.memberId,
-          member.firstName,
-          member.lastName,
-          member.memberDate,
-          member.expirationDate
+          id,
+          memberId,
+          firstName,
+          lastName,
+          memberDate,
+          expirationDate
         )
       );
     },

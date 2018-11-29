@@ -35,6 +35,7 @@ export const deactiveMember = (
 ) => {
   return dispatch => {
     expirationDate = moment().format("YYYY-MM-DD");
+    console.log(id);
     return axios
       .put(`/api/members/${id}/`, {
         id,
@@ -76,7 +77,9 @@ export const renewMember = (
   expirationDate
 ) => {
   return dispatch => {
-    expirationDate = '2020-10-10';
+    expirationDate = moment()
+      .add(1, "year")
+      .format("YYYY-MM-DD");
     return axios
       .put(`/api/members/${id}/`, {
         id,
