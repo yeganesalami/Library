@@ -25,6 +25,47 @@ export const fetchMembers = () => {
   };
 };
 
+export const add = data => {
+  return {
+    type: "ADD_MEMBER",
+    payload: {
+      id: data.id,
+      memberId: data.memberId,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      memberDate: data.memberDate,
+      expirationDate: data.expirationDate
+    }
+  };
+};
+
+export const addMember = (
+  id,
+  memberId,
+  firstName,
+  lastName,
+  memberDate,
+  expirationDate
+) => {
+  return dispatch => {
+    return axios
+      .post("/api/members/", {
+        id,
+        memberId,
+        firstName,
+        lastName,
+        memberDate,
+        expirationDate
+      })
+      .then(res => {
+        dispatch(add(res.data));
+      })
+      .catch(err => {
+        throw err;
+      });
+  };
+};
+
 export const deactiveMember = (
   id,
   memberId,

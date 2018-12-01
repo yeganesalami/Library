@@ -130,7 +130,7 @@ class CreateAuthor extends Component {
           <Grid container sm={12} style={{ marginTop: 20 }}>
             <Grid item sm>
               <Button variant="contained" color="primary" type="submit">
-                <i className="fa fa-plus" aria-hidden="true" />
+                ADD
               </Button>
             </Grid>
           </Grid>

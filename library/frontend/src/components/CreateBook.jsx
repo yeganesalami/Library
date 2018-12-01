@@ -70,7 +70,6 @@ class CreateBook extends Component {
                 value={this.state.author}
                 onChange={e => this.setState({ author: e.target.value })}
               />
-              
             </Grid>
             <Grid item sm>
               <TextField
@@ -84,7 +83,7 @@ class CreateBook extends Component {
               <FormControl style={{ width: 200 }}>
                 <InputLabel htmlFor="status">Status</InputLabel>
                 <Select
-                  label="status"
+                  label="status"da
                   required
                   value={this.state.free}
                   onChange={e => this.setState({ free: e.target.value })}
@@ -129,13 +128,6 @@ class CreateBook extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    books: state.books,
-    authors: state.authors
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     addBook: (id, title, author, description, free, category) => {
@@ -147,6 +139,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(CreateBook);
