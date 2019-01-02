@@ -38,13 +38,13 @@ class Member extends Component {
     memberDate: "",
     expirationDate: "",
     month: "3",
-    open: false,
+    openDialog: false,
     openRenew: false
   };
 
   handleClickOpenDeactive = data => {
     this.setState({
-      open: true,
+      openDialog: true,
       id: data.id,
       memberId: data.memberId,
       firstName: data.firstName,
@@ -63,7 +63,7 @@ class Member extends Component {
       this.state.memberDate,
       this.state.expirationDate
     );
-    this.setState({ open: false });
+    this.setState({ openDialog: false });
   };
 
   handleclickOpenRenew = data => {
@@ -92,7 +92,7 @@ class Member extends Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false, openRenew: false });
+    this.setState({ openDialog: false, openRenew: false });
   };
 
   render() {
@@ -189,7 +189,7 @@ class Member extends Component {
         </Table>
       </Paper>,
       <Dialog
-        open={this.state.open}
+        open={this.state.openDialog}
         onClose={this.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -242,7 +242,7 @@ class Member extends Component {
             Cancel
           </Button>
           <Button onClick={this.handleRenew} color="primary" autoFocus>
-            Avtive
+            Active
           </Button>
         </DialogActions>
       </Dialog>

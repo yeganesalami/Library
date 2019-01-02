@@ -140,11 +140,6 @@ class CreateAuthor extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    authors: state.authors
-  };
-};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -157,6 +152,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(CreateAuthor);

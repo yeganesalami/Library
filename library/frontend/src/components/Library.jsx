@@ -9,7 +9,12 @@ import {
   TableBody,
   Button,
   Paper,
-  Typography
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core";
 import NavigationIcon from "@material-ui/icons/Navigation";
 
@@ -19,11 +24,40 @@ class Library extends Component {
     author: "",
     description: "",
     free: "",
-    category: ""
+    category: "",
+    openDialog:false
+  };
+
+  handleClickOpenDialog = data =>{
+    this.setState({
+      openDialog:true,
+      id: data.id,
+      title: data.title,
+      author: data.author,
+      description:data.description,
+      free: data.free,
+      category:data.category
+    })
+  };
+
+  handleBorrow = () =>{
+    this.props.borrowBook(
+      this.state.id,
+      this.state.title,
+      this.state.author,
+      this.state.description,
+      this.state.free,
+      this.state.category
+    );
+    this.setState({openDialog:false});
+  }
+
+  handleClose = () => {
+    this.setState({ openDialog: false });
   };
 
   render() {
-    return (
+    return [
       <Paper
         style={{
           marginLeft: 120,
@@ -70,10 +104,10 @@ class Library extends Component {
                 <TableCell>{book.category}</TableCell>
                 <TableCell>{book.description}</TableCell>
                 <TableCell>
-                  {book.free === "true" ? (
+                  {book.free === "free" ? (
                     <Button
                       color="primary"
-                      onClick={() => this.props.borrowBook(book)}
+                      onClick={()=>this.handleClickOpenDialog(book)}
                     >
                       <NavigationIcon />
                     </Button>
@@ -87,8 +121,29 @@ class Library extends Component {
             ))}
           </TableBody>
         </Table>
-      </Paper>
-    );
+      </Paper>,
+      <Dialog
+        open={this.state.openDialog}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title"></DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Borrow This Book For 15 Days?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleBorrow} color="primary" autoFocus>
+            Borrow
+          </Button>
+        </DialogActions>
+      </Dialog>
+    ];
   }
 }
 
@@ -100,15 +155,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    borrowBook: book => {
+    borrowBook: (id,title,author,description,free,category) => {
       return dispatch(
         borrowBook(
-          book.id,
-          book.title,
-          book.author,
-          book.description,
-          book.free,
-          book.category
+          id,
+          title,
+          author,
+          description,
+          free,
+          category
         )
       );
     }
