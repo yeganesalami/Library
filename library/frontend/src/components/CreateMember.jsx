@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TextField, Grid, Button, Paper } from "@material-ui/core";
+import { TextField, Grid, Button, Paper,  FormControl,InputLabel,Select,MenuItem } from "@material-ui/core";
 import { connect } from "react-redux";
 import { members } from "../actions";
 
@@ -10,7 +10,8 @@ class Createmember extends Component {
     firstName: "",
     lastName: "",
     memberDate: "",
-    expirationDate: ""
+    expirationDate: "",
+    month:"3"
   };
 
   submitMember = e => {
@@ -21,10 +22,9 @@ class Createmember extends Component {
       this.state.firstName,
       this.state.lastName,
       this.state.memberDate,
-      this.state.expirationDate
+      this.state.expirationDate,
+      this.state.month
     );
-
-    alert(`successfully added ${this.state.memberId}`);
 
     this.setState({
       id: "",
@@ -88,20 +88,23 @@ class Createmember extends Component {
                 onChange={e => this.setState({ memberDate: e.target.value })}
               />
             </Grid>
-            <Grid item sm={4}>
-              <TextField
-                label="Expiration Date"
-                required
-                type="date"
-                format={"YYYY-MM-DD"}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={this.state.expirationDate}
-                onChange={e =>
-                  this.setState({ expirationDate: e.target.value })
-                }
-              />
+            <Grid item sm={2}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="monthId">Duration</InputLabel>
+                <Select
+                  required
+                  value={this.state.month}
+                  onChange={e => this.setState({ month: e.target.value })}
+                  inputProps={{
+                    name: "month",
+                    id: "monthId"
+                  }}
+                >
+                  <MenuItem value={"3"}>3 Month</MenuItem>
+                  <MenuItem value={"6"}>6 month</MenuItem>
+                  <MenuItem value={"12"}>12 Month</MenuItem>
+                </Select>
+            </FormControl>
             </Grid>
           </Grid>
           <Grid container style={{ marginTop: 10 }}>
@@ -125,7 +128,8 @@ const mapDispatchToProps = dispatch => {
       firstName,
       lastName,
       memberDate,
-      expirationDate
+      expirationDate,
+      month
     ) => {
       return dispatch(
         members.addMember(
@@ -134,7 +138,8 @@ const mapDispatchToProps = dispatch => {
           firstName,
           lastName,
           memberDate,
-          expirationDate
+          expirationDate,
+          month
         )
       );
     }

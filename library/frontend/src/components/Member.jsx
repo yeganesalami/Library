@@ -38,6 +38,7 @@ class Member extends Component {
     memberDate: "",
     expirationDate: "",
     month: "3",
+    member:"",
     openDialog: false,
     openRenew: false
   };
@@ -45,23 +46,13 @@ class Member extends Component {
   handleClickOpenDeactive = data => {
     this.setState({
       openDialog: true,
-      id: data.id,
-      memberId: data.memberId,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      memberDate: data.memberDate,
-      expirationDate: data.expirationDate
+      member: data
     });
   };
 
   handleDeactive = () => {
     this.props.deactiveMember(
-      this.state.id,
-      this.state.memberId,
-      this.state.firstName,
-      this.state.lastName,
-      this.state.memberDate,
-      this.state.expirationDate
+      this.state.member
     );
     this.setState({ openDialog: false });
   };
@@ -69,23 +60,13 @@ class Member extends Component {
   handleclickOpenRenew = data => {
     this.setState({
       openRenew: true,
-      id: data.id,
-      memberId: data.memberId,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      memberDate: data.memberDate,
-      expirationDate: data.expirationDate
+      member: data
     });
   };
 
   handleRenew = () => {
     this.props.renewMember(
-      this.state.id,
-      this.state.memberId,
-      this.state.firstName,
-      this.state.lastName,
-      this.state.memberDate,
-      this.state.expirationDate,
+      this.state.member,
       this.state.month
     );
     this.setState({ openRenew: false });
@@ -258,44 +239,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    deactiveMember: (
-      id,
-      memberId,
-      firstName,
-      lastName,
-      memberDate,
-      expirationDate
-    ) => {
+    deactiveMember: member => {
       return dispatch(
-        deactiveMember(
-          id,
-          memberId,
-          firstName,
-          lastName,
-          memberDate,
-          expirationDate
-        )
+        deactiveMember(member)
       );
     },
-    renewMember: (
-      id,
-      memberId,
-      firstName,
-      lastName,
-      memberDate,
-      expirationDate,
-      month
-    ) => {
+    renewMember: (member, month) => {
       return dispatch(
-        renewMember(
-          id,
-          memberId,
-          firstName,
-          lastName,
-          memberDate,
-          expirationDate,
-          month
-        )
+        renewMember(member, month)
       );
     }
   };

@@ -83,34 +83,20 @@ export const updateBook = (id, title, author, description, free, category) => {
     };
 };
 
-export const borrow = data => {
+export const borrow = (book) => {
     return {
         type: "BORROW_BOOK",
-        payload: {
-            id: data.id,
-            title: data.title,
-            author: data.author,
-            description: data.description,
-            free: data.free,
-            category: data.category
-        }
+        book
     };
 };
 
-export const borrowBook = (id, title, author, description, free, category) => {
-    free = "false";
+export const borrowBook = (book) => {
+    book.free = 'borrowed';
     return dispatch => {
         return axios
-            .put(`/api/books/${id}/`, {
-                id,
-                title,
-                author,
-                description,
-                free,
-                category
-            })
+            .put(`/api/books/${book.id}/`, book)
             .then(res => {
-                dispatch(borrow(res.data));
+                dispatch(borrow(book));
             })
             .catch(err => {
                 throw err;

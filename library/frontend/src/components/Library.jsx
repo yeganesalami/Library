@@ -25,29 +25,20 @@ class Library extends Component {
     description: "",
     free: "",
     category: "",
+    book:"",
     openDialog:false
   };
 
   handleClickOpenDialog = data =>{
     this.setState({
       openDialog:true,
-      id: data.id,
-      title: data.title,
-      author: data.author,
-      description:data.description,
-      free: data.free,
-      category:data.category
+      book : data
     })
   };
 
   handleBorrow = () =>{
     this.props.borrowBook(
-      this.state.id,
-      this.state.title,
-      this.state.author,
-      this.state.description,
-      this.state.free,
-      this.state.category
+      this.state.book
     );
     this.setState({openDialog:false});
   }
@@ -155,16 +146,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    borrowBook: (id,title,author,description,free,category) => {
+    borrowBook: (book) => {
       return dispatch(
-        borrowBook(
-          id,
-          title,
-          author,
-          description,
-          free,
-          category
-        )
+        borrowBook(book)
       );
     }
   };

@@ -72,18 +72,17 @@ export const addAuthor = (
 export const del = id => {
     return {
         type: "DELETE_AUTHOR",
-        params: {
-            id
-        }
+        id
     };
 };
 
 export const deleteAuthor = id => {
     return dispatch => {
+        let authorId = id;
         return axios
             .delete(`/api/authors/${id}/`)
             .then(res => {
-                dispatch(del(res.data));
+                dispatch(del(authorId));
             })
             .catch(err => {
                 throw err;
