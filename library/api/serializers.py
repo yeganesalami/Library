@@ -18,5 +18,5 @@ class AuthorSerializer(serializers.ModelSerializer):
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ('id', 'memberId', 'firstName', 'lastName',
-                  'memberDate', 'expirationDate')
+        fields = ('id', 'memberId', 'firstName', 'lastName','fatherName','melliCode',
+                  'memberDate', 'expirationDate', )

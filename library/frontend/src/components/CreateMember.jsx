@@ -9,6 +9,8 @@ class Createmember extends Component {
     memberId: "",
     firstName: "",
     lastName: "",
+    melliCode:"",
+    fatherName:"",
     memberDate: "",
     expirationDate: "",
     month:"3"
@@ -21,6 +23,8 @@ class Createmember extends Component {
       this.state.memberId,
       this.state.firstName,
       this.state.lastName,
+      this.state.melliCode,
+      this.state.fatherName,
       this.state.memberDate,
       this.state.expirationDate,
       this.state.month
@@ -31,6 +35,8 @@ class Createmember extends Component {
       memberId: "",
       firstName: "",
       lastName: "",
+      melliCode:"",
+      fatherName:"",
       memberDate: "",
       expirationDate: ""
     });
@@ -41,15 +47,15 @@ class Createmember extends Component {
     return (
       <Paper
         style={{
-          marginLeft: 120,
-          marginRight: 120,
+          marginLeft: 70,
+          marginRight: 70,
           marginTop: 20,
           padding: 50
         }}
       >
         <form onSubmit={this.submitMember}>
           <Grid container>
-            <Grid item sm={4}>
+            <Grid item sm={3}>
               <TextField
                 label="Member ID"
                 required
@@ -57,7 +63,7 @@ class Createmember extends Component {
                 onChange={e => this.setState({ memberId: e.target.value })}
               />
             </Grid>
-            <Grid item sm={4}>
+            <Grid item sm={3}>
               <TextField
                 label="First Name"
                 required
@@ -65,7 +71,7 @@ class Createmember extends Component {
                 onChange={e => this.setState({ firstName: e.target.value })}
               />
             </Grid>
-            <Grid item sm={4}>
+            <Grid item sm={3}>
               <TextField
                 label="Last Name"
                 required
@@ -73,9 +79,18 @@ class Createmember extends Component {
                 onChange={e => this.setState({ lastName: e.target.value })}
               />
             </Grid>
+            <Grid item sm={3}>
+              <TextField
+                label="MelliCode"
+                required
+                type="number"
+                value={this.state.melliCode}
+                onChange={e => this.setState({ melliCode: e.target.value })}
+              />
+            </Grid>
           </Grid>
           <Grid container style={{ marginTop: 10 }}>
-            <Grid item sm={4}>
+            <Grid item sm={3}>
               <TextField
                 label="Member Date"
                 required
@@ -88,7 +103,15 @@ class Createmember extends Component {
                 onChange={e => this.setState({ memberDate: e.target.value })}
               />
             </Grid>
-            <Grid item sm={2}>
+            <Grid item sm={3}>
+              <TextField
+                label="Father Name"
+                required
+                value={this.state.fatherName}
+                onChange={e => this.setState({ fatherName: e.target.value })}
+              />
+            </Grid>
+            <Grid item sm={3}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="monthId">Duration</InputLabel>
                 <Select
@@ -127,6 +150,8 @@ const mapDispatchToProps = dispatch => {
       memberId,
       firstName,
       lastName,
+      melliCode,
+      fatherName,
       memberDate,
       expirationDate,
       month
@@ -137,6 +162,8 @@ const mapDispatchToProps = dispatch => {
           memberId,
           firstName,
           lastName,
+          melliCode,
+          fatherName,
           memberDate,
           expirationDate,
           month

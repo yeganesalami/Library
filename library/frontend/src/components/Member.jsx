@@ -35,6 +35,8 @@ class Member extends Component {
     memberId: "",
     firstName: "",
     lastName: "",
+    fatherName:"",
+    melliCode:"",
     memberDate: "",
     expirationDate: "",
     month: "3",
@@ -81,8 +83,8 @@ class Member extends Component {
       <Createmember />,
       <Paper
         style={{
-          marginLeft: 120,
-          marginRight: 120,
+          marginLeft: 70,
+          marginRight: 70,
           marginTop: 20,
           padding: 50
         }}
@@ -103,6 +105,11 @@ class Member extends Component {
               <TableCell>
                 <Typography variant="body2" gutterBottom>
                   Last Name
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body2" gutterBottom>
+                  Melli Code
                 </Typography>
               </TableCell>
               <TableCell>
@@ -133,6 +140,7 @@ class Member extends Component {
                 <TableCell>{member.memberId}</TableCell>
                 <TableCell>{member.firstName}</TableCell>
                 <TableCell>{member.lastName}</TableCell>
+                <TableCell>{member.melliCode}</TableCell>
                 <TableCell>{member.memberDate}</TableCell>
                 <TableCell>{member.expirationDate}</TableCell>
                 <TableCell>

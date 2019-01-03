@@ -33,6 +33,8 @@ export const add = data => {
             memberId: data.memberId,
             firstName: data.firstName,
             lastName: data.lastName,
+            melliCode: data.melliCode,
+            fatherName: data.fatherName,
             memberDate: data.memberDate,
             expirationDate: data.expirationDate
         }
@@ -44,6 +46,8 @@ export const addMember = (
     memberId,
     firstName,
     lastName,
+    melliCode,
+    fatherName,
     memberDate,
     expirationDate,
     month
@@ -70,6 +74,8 @@ export const addMember = (
                 memberId,
                 firstName,
                 lastName,
+                melliCode,
+                fatherName,
                 memberDate,
                 expirationDate
             })
