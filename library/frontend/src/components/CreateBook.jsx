@@ -19,8 +19,29 @@ class CreateBook extends Component {
     author: "",
     description: "",
     free: "",
-    category: ""
+    category: "",
+    authors:[]
   };
+
+  constructor(){
+    super();
+    this.state={authors:[]}
+  }
+
+  componentDidMount(){
+    let initialAuthor = [];
+    fetch('/api/authors/').then(res=>{
+      return res.json()
+    }).then(data =>{
+      initialAuthor = data.map((author)=>{
+        return author;
+      });
+      this.setState({
+        authors:initialAuthor,
+      });
+      console.log(this.state.authors)
+    })
+  }
 
   submitBook = e => {
     e.preventDefault();
@@ -44,6 +65,10 @@ class CreateBook extends Component {
   };
 
   render() {
+    let optionAuthor = this.state.authors.map(author => 
+      <MenuItem value={author.id}>{author.name}</MenuItem>
+    )
+
     return (
       <Paper
         style={{
@@ -64,12 +89,24 @@ class CreateBook extends Component {
               />
             </Grid>
             <Grid item sm>
-              <TextField
-                label="Author"
-                required
-                value={this.state.author}
-                onChange={e => this.setState({ author: e.target.value })}
-              />
+              <FormControl style={{ width: 200 }}>
+                <InputLabel htmlFor="Author">Author</InputLabel>
+                <Select
+                  label="Author"
+                  required
+                  value={this.state.author}
+                  onChange={e => this.setState({ author: e.target.value })}
+                  inputProps={{
+                    name: "author",
+                    id: "authorId"
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {optionAuthor}  
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item sm>
               <TextField
@@ -83,7 +120,7 @@ class CreateBook extends Component {
               <FormControl style={{ width: 200 }}>
                 <InputLabel htmlFor="status">Status</InputLabel>
                 <Select
-                  label="status"da
+                  label="status"
                   required
                   value={this.state.free}
                   onChange={e => this.setState({ free: e.target.value })}
