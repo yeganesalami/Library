@@ -14,42 +14,68 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import NavigationIcon from "@material-ui/icons/Navigation";
 
 class Library extends Component {
- 
-  
   state = {
     title: "",
     author: "",
     description: "",
     free: "",
     category: "",
-    book:"",
-    openDialog:false
+    book: "",
+    member: "",
+    members: "",
+    openDialog: false
   };
 
-  handleClickOpenDialog = data =>{
-    this.setState({
-      openDialog:true,
-      book : data
-    })
-  };
-
-  handleBorrow = () =>{
-    this.props.borrowBook(
-      this.state.book
-    );
-    this.setState({openDialog:false});
+  constructor() {
+    super();
+    this.state = { members: [] };
   }
+
+  componentDidMount() {
+    let initialMembers = [];
+    fetch("/api/members/")
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        initialMembers = data.map(member => {
+          return member;
+        });
+        this.setState({
+          members: initialMembers
+        });
+      });
+  }
+
+  handleClickOpenDialog = data => {
+    this.setState({
+      openDialog: true,
+      book: data
+    });
+  };
+
+  handleBorrow = () => {
+    this.props.borrowBook(this.state.book, this.state.member);
+    this.setState({ openDialog: false });
+  };
 
   handleClose = () => {
     this.setState({ openDialog: false });
   };
 
   render() {
+    let optionMember = this.state.members.map(member => (
+      <MenuItem value={member.id}>{member.memberId}</MenuItem>
+    ));
     return [
       <Paper
         style={{
@@ -99,13 +125,14 @@ class Library extends Component {
                 <TableCell>
                   {book.free === "free" ? (
                     <Button
+                      variant="contained"
                       color="primary"
-                      onClick={()=>this.handleClickOpenDialog(book)}
+                      onClick={() => this.handleClickOpenDialog(book)}
                     >
                       <NavigationIcon />
                     </Button>
                   ) : (
-                    <Button color="primary" disabled>
+                    <Button variant="contained" color="primary" disabled>
                       <NavigationIcon />
                     </Button>
                   )}
@@ -121,17 +148,35 @@ class Library extends Component {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title"></DialogTitle>
+        <DialogTitle id="alert-dialog-title" />
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Borrow This Book For 15 Days?
+            Who You Want To Borrow This Book For 15 Days?
+            <FormControl fullWidth>
+              <InputLabel htmlFor="Member">Member</InputLabel>
+              <Select
+                label="Member"
+                required
+                value={this.state.member}
+                onChange={e => this.setState({ member: e.target.value })}
+                inputProps={{
+                  name: "member",
+                  id: "memberId"
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {optionMember}
+              </Select>
+            </FormControl>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <Button onClick={this.handleClose} variant="contained" color="secondary">
             Cancel
           </Button>
-          <Button onClick={this.handleBorrow} color="primary" autoFocus>
+          <Button onClick={this.handleBorrow} variant="contained" color="primary">
             Borrow
           </Button>
         </DialogActions>
@@ -148,10 +193,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    borrowBook: (book) => {
-      return dispatch(
-        borrowBook(book)
-      );
+    borrowBook: (book, member) => {
+      return dispatch(borrowBook(book, member));
     }
   };
 };

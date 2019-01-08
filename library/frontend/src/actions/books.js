@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -90,13 +91,34 @@ export const borrow = (book) => {
     };
 };
 
-export const borrowBook = (book) => {
-    book.free = 'borrowed';
+export const addBorrow = (book, member) => {
+    return {
+        type: "ADD_BORROW",
+        book,
+        member
+    }
+}
+
+export const borrowBook = (book, member) => {
+    book.free = 'borrowed'
+    let bookId = book.id
+    let memberId = member
+    let borrowedDate = moment().format("YYYY-MM-DD");
+
+
     return dispatch => {
         return axios
             .put(`/api/books/${book.id}/`, book)
             .then(res => {
                 dispatch(borrow(book));
+            })
+            .catch(err => {
+                throw err;
+            }),
+            axios
+            .post("/api/borrow/", { bookId, memberId, borrowedDate })
+            .then(res => {
+                dispatch(addBorrow(res.data));
             })
             .catch(err => {
                 throw err;

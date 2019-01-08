@@ -190,10 +190,10 @@ class Member extends Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <Button onClick={this.handleClose} variant="contained" color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleDeactive} color="primary" autoFocus>
+          <Button onClick={this.handleDeactive} variant="contained" color="primary" autoFocus>
             Deactive
           </Button>
         </DialogActions>
@@ -227,10 +227,10 @@ class Member extends Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <Button onClick={this.handleClose} variant="contained" color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleRenew} color="primary" autoFocus>
+          <Button onClick={this.handleRenew} variant="contained" color="primary" autoFocus>
             Active
           </Button>
         </DialogActions>

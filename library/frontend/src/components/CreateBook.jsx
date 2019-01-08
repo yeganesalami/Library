@@ -39,7 +39,6 @@ class CreateBook extends Component {
       this.setState({
         authors:initialAuthor,
       });
-      console.log(this.state.authors)
     })
   }
 
