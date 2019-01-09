@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TextField, Grid, Button, Paper,  FormControl,InputLabel,Select,MenuItem } from "@material-ui/core";
 import { connect } from "react-redux";
-import { members } from "../actions";
+import { members } from "../../actions";
 
 class Createmember extends Component {
   state = {

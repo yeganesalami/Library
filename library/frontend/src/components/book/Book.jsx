@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { borrowBook } from "../actions/books";
+import { books } from "../../actions";
 import {
   Table,
   TableHead,
@@ -14,69 +14,46 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem
+  DialogActions
 } from "@material-ui/core";
-import NavigationIcon from "@material-ui/icons/Navigation";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import CreateBook from "./CreateBook";
 
-class Library extends Component {
+class Book extends Component {
   state = {
+    id: "",
     title: "",
     author: "",
     description: "",
     free: "",
     category: "",
-    book: "",
-    member: "",
-    members: "",
-    openDialog: false
+    open: false
   };
 
-  constructor() {
-    super();
-    this.state = { members: [] };
-  }
-
-  componentDidMount() {
-    let initialMembers = [];
-    fetch("/api/members/")
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        initialMembers = data.map(member => {
-          return member;
-        });
-        this.setState({
-          members: initialMembers
-        });
-      });
-  }
-
-  handleClickOpenDialog = data => {
+  handleClickOpen = data => {
     this.setState({
-      openDialog: true,
-      book: data
+      open: true,
+      id: data.id,
+      title: data.title,
+      author: data.author,
+      description: data.description,
+      free: data.free,
+      category: data.category
     });
   };
 
-  handleBorrow = () => {
-    this.props.borrowBook(this.state.book, this.state.member);
-    this.setState({ openDialog: false });
+  handleDelete = () => {
+    this.props.deleteBook(this.state.id);
+    this.setState({ open: false });
   };
 
   handleClose = () => {
-    this.setState({ openDialog: false });
+    this.setState({ open: false });
   };
 
   render() {
-    let optionMember = this.state.members.map(member => (
-      <MenuItem value={member.id}>{member.memberId}</MenuItem>
-    ));
     return [
+      <CreateBook />,
       <Paper
         style={{
           marginLeft: 120,
@@ -110,7 +87,7 @@ class Library extends Component {
               </TableCell>
               <TableCell>
                 <Typography variant="caption" gutterBottom>
-                  Borrow Book
+                  Delete Book
                 </Typography>
               </TableCell>
             </TableRow>
@@ -126,14 +103,15 @@ class Library extends Component {
                   {book.free === "free" ? (
                     <Button
                       variant="contained"
-                      color="primary"
-                      onClick={() => this.handleClickOpenDialog(book)}
+                      color="secondary"
+                      // onClick={() => this.props.deleteBook(id)}
+                      onClick={() => this.handleClickOpen(book)}
                     >
-                      <NavigationIcon />
+                      <DeleteForeverIcon />
                     </Button>
                   ) : (
-                    <Button variant="contained" color="primary" disabled>
-                      <NavigationIcon />
+                    <Button variant="contained" color="secondary" disabled>
+                      <DeleteForeverIcon />
                     </Button>
                   )}
                 </TableCell>
@@ -143,41 +121,23 @@ class Library extends Component {
         </Table>
       </Paper>,
       <Dialog
-        open={this.state.openDialog}
+        open={this.state.open}
         onClose={this.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" />
+        <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Who You Want To Borrow This Book For 15 Days?
-            <FormControl fullWidth>
-              <InputLabel htmlFor="Member">Member</InputLabel>
-              <Select
-                label="Member"
-                required
-                value={this.state.member}
-                onChange={e => this.setState({ member: e.target.value })}
-                inputProps={{
-                  name: "member",
-                  id: "memberId"
-                }}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {optionMember}
-              </Select>
-            </FormControl>
+            Are You Sure You Want To Delete?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} variant="contained" color="secondary">
+          <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleBorrow} variant="contained" color="primary">
-            Borrow
+          <Button onClick={this.handleDelete} color="primary" autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
@@ -187,14 +147,15 @@ class Library extends Component {
 
 const mapStateToProps = state => {
   return {
-    books: state.books
+    books: state.books,
+    authors: state.authors
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    borrowBook: (book, member) => {
-      return dispatch(borrowBook(book, member));
+    deleteBook: id => {
+      return dispatch(books.deleteBook(id));
     }
   };
 };
@@ -202,4 +163,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Library);
+)(Book);

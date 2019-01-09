@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import moment from "moment";
 import { connect } from "react-redux";
-import { books } from "../actions";
+import { borrowBook } from "../../actions/books";
 import {
   Table,
   TableHead,
@@ -14,46 +15,73 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
+  
 } from "@material-ui/core";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import CreateBook from "./CreateBook";
+import NavigationIcon from "@material-ui/icons/Navigation";
 
-class Book extends Component {
+class Library extends Component {
   state = {
-    id: "",
     title: "",
     author: "",
     description: "",
     free: "",
     category: "",
-    open: false
+    book: "",
+    member: "",
+    members: "",
+    openDialog: false
   };
 
-  handleClickOpen = data => {
+  constructor() {
+    super();
+    this.state = { members: [] };
+  }
+
+  componentDidMount() {
+    let initialMembers = [];
+    fetch("/api/members/")
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        initialMembers = data.map(member => {
+          return member;
+        });
+        this.setState({
+          members: initialMembers
+        });
+      });
+  }
+
+  handleClickOpenDialog = data => {
     this.setState({
-      open: true,
-      id: data.id,
-      title: data.title,
-      author: data.author,
-      description: data.description,
-      free: data.free,
-      category: data.category
+      openDialog: true,
+      book: data
     });
   };
 
-  handleDelete = () => {
-    this.props.deleteBook(this.state.id);
-    this.setState({ open: false });
+  handleBorrow = () => {
+    this.props.borrowBook(this.state.book, this.state.member);
+    this.setState({ openDialog: false });
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ openDialog: false });
   };
 
   render() {
+    let optionMember = this.state.members.map(member => {
+      member.expirationDate > moment().format("YYYY-MM-DD") ? (
+        <MenuItem value={member.id}>{member.memberId}</MenuItem>
+      ) :
+      null
+    });
     return [
-      <CreateBook />,
       <Paper
         style={{
           marginLeft: 120,
@@ -62,6 +90,16 @@ class Book extends Component {
           padding: 50
         }}
       >
+        {/* <SearchBar
+          onChange={() => console.log("onChange")}
+          onRequestSearch={() => console.log("onRequestSearch")}
+          style={{
+            margin: "0 auto",
+            maxWidth: 800
+          }}
+        /> */}
+        
+        {/* <Search/> */}
         <Table>
           <TableHead>
             <TableRow>
@@ -87,7 +125,7 @@ class Book extends Component {
               </TableCell>
               <TableCell>
                 <Typography variant="caption" gutterBottom>
-                  Delete Book
+                  Borrow Book
                 </Typography>
               </TableCell>
             </TableRow>
@@ -103,15 +141,14 @@ class Book extends Component {
                   {book.free === "free" ? (
                     <Button
                       variant="contained"
-                      color="secondary"
-                      // onClick={() => this.props.deleteBook(id)}
-                      onClick={() => this.handleClickOpen(book)}
+                      color="primary"
+                      onClick={() => this.handleClickOpenDialog(book)}
                     >
-                      <DeleteForeverIcon />
+                      <NavigationIcon />
                     </Button>
                   ) : (
-                    <Button variant="contained" color="secondary" disabled>
-                      <DeleteForeverIcon />
+                    <Button variant="contained" color="primary" disabled>
+                      <NavigationIcon />
                     </Button>
                   )}
                 </TableCell>
@@ -121,23 +158,49 @@ class Book extends Component {
         </Table>
       </Paper>,
       <Dialog
-        open={this.state.open}
+        open={this.state.openDialog}
         onClose={this.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" />
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are You Sure You Want To Delete?
+            Who You Want To Borrow This Book For 15 Days?
+            <FormControl fullWidth>
+              <InputLabel htmlFor="Member">Member</InputLabel>
+              <Select
+                label="Member"
+                required
+                value={this.state.member}
+                onChange={e => this.setState({ member: e.target.value })}
+                inputProps={{
+                  name: "member",
+                  id: "memberId"
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {optionMember}
+              </Select>
+            </FormControl>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <Button
+            onClick={this.handleClose}
+            variant="contained"
+            color="secondary"
+          >
             Cancel
           </Button>
-          <Button onClick={this.handleDelete} color="primary" autoFocus>
-            Delete
+          <Button
+            onClick={this.handleBorrow}
+            variant="contained"
+            color="primary"
+          >
+            Borrow
           </Button>
         </DialogActions>
       </Dialog>
@@ -147,15 +210,14 @@ class Book extends Component {
 
 const mapStateToProps = state => {
   return {
-    books: state.books,
-    authors: state.authors
+    books: state.books
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteBook: id => {
-      return dispatch(books.deleteBook(id));
+    borrowBook: (book, member) => {
+      return dispatch(borrowBook(book, member));
     }
   };
 };
@@ -163,4 +225,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Book);
+)(Library);

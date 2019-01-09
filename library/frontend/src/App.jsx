@@ -4,11 +4,11 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 
-import Header from "../src/components/Header";
-import Library from "../src/components/Library";
-import Book from "../src/components/Book";
-import Author from "../src/components/Author";
-import Member from "../src/components/Member";
+import Header from "./components/layout/Header";
+import Library from "./components/library/Library";
+import Book from "./components/book/Book";
+import Author from "./components/author/Author";
+import Member from "./components/member/Member";
 
 import { connect } from "react-redux";
 import { books, authors,members } from "./actions";

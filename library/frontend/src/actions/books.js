@@ -16,7 +16,7 @@ export const fetchBooks = () => {
         return axios
             .get("/api/books/")
             .then(res => {
-                dispatch(fetch(res.data));
+                dispatch(fetch(res.data))
             })
             .catch(err => {
                 throw err;

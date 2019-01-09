@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 
-import { deactiveMember } from "../actions/members";
-import { renewMember } from "../actions/members";
+import { deactiveMember } from "../../actions/members";
+import { renewMember } from "../../actions/members";
 
 import Createmember from "./CreateMember";
 import {
@@ -27,6 +27,7 @@ import {
   MenuItem
 } from "@material-ui/core";
 
+
 import { Close, Refresh } from "@material-ui/icons";
 
 class Member extends Component {
@@ -44,6 +45,7 @@ class Member extends Component {
     openDialog: false,
     openRenew: false
   };
+
 
   handleClickOpenDeactive = data => {
     this.setState({

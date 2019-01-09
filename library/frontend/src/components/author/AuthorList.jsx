@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { authors } from "../actions";
-import CreateAuthor from "./CreateAuthor";
+import { authors } from "../../actions";
+
 import {
   Button,
   Table,
@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
-class Author extends Component {
+class AuthorList extends Component {
   state = {
     id: "",
     name: "",
@@ -54,7 +54,6 @@ class Author extends Component {
 
   render() {
     return [
-      <CreateAuthor />,
       <Paper
         style={{
           marginLeft: 120,
@@ -113,10 +112,10 @@ class Author extends Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <Button onClick={this.handleClose} variant="contained" color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleDelete} color="primary" autoFocus>
+          <Button onClick={this.handleDelete} variant="contained" color="secondary">
             Delete
           </Button>
         </DialogActions>
@@ -142,4 +141,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Author);
+)(AuthorList);
