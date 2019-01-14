@@ -63,3 +63,7 @@ export default connect(
   null,
   mapDispatchToProps
 )(App);
+
+
+//mapStateToProps : Subscribe to the Store
+//mapDispatchToProps : Inject Action Creators
