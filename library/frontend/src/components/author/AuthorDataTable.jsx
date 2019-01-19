@@ -1,73 +1,47 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Griddle, {
+  RowDefinition,
+  ColumnDefinition,
+  plugins
+} from "griddle-react";
+
 import {
-  Grid,
-  Table,
-  TableHeaderRow,
-  TableEditRow,
-  Toolbar,
-  TableEditColumn,
-  SearchPanel,
-  PagingPanel
-} from "@devexpress/dx-react-grid-material-ui";
-import {
-  EditingState,
-  SearchState,
-  IntegratedFiltering,
-  SortingState,
-  IntegratedSorting,
-  PagingState,
-  IntegratedPaging
-} from "@devexpress/dx-react-grid";
-import {
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  Button
+  DialogActions
 } from "@material-ui/core";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
+import { styleConfig } from "../layout/DataTableStyles";
 import { authors } from "../../actions";
 
 class AuthorDataTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
-      open: "",
-      columns: [
-        { name: "name", title: "Name" },
-        { name: "gender", title: "Gender" },
-        { name: "birthday", title: "Birthday" },
-        { name: "born", title: "Born" },
-        { name: "kind", title: "Kind" },
-        { name: "description", title: "Description" }
-      ]
+      currentPage: 1,
+      pageSize: 5,
+      index: "",
+      open: ""
     };
-
-    this.commitChanges = this.commitChanges.bind(this);
-  }
-
-  commitChanges({ deleted }) {
-    let rows = this.props.authors;
-
-    if (deleted) {
-      const deletedSet = new Set(deleted);
-      rows = rows.filter(row => deletedSet.has(row.id));
-      let rowId = rows[0].id;
-      this.setState({ id: rowId });
-      this.handleClickOpen();
-    }
   }
 
   handleDelete = () => {
-    this.props.deleteAuthor(this.state.id);
     this.setState({ open: false });
+    let index = this.state.index;
+    let author = this.props.authors[index];
+    this.props.deleteAuthor(author.id);
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
+  handleClickOpen = array => {
+    this.setState({
+      open: true,
+      index: array.griddleKey
+    });
   };
 
   handleClose = () => {
@@ -75,25 +49,56 @@ class AuthorDataTable extends Component {
   };
 
   render() {
-    const { columns } = this.state;
+    const { currentPage, pageSize } = this.state;
+
+    const getCellAction = array => {
+      let index = array.griddleKey;
+      let author = this.props.authors[index];
+      let btn = (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => this.handleClickOpen(array)}
+        >
+          <DeleteForeverIcon />
+        </Button>
+      );
+      return btn;
+    };
+
     return [
-      <Grid columns={columns} rows={this.props.authors}>
-        <SearchState />
-        <IntegratedFiltering />
-        <SortingState />
-        <IntegratedSorting />
-        <PagingState defaultCurrentPage={0} pageSize={5} />
-        <IntegratedPaging />
-        <EditingState onCommitChanges={this.commitChanges} />
-        <Table />
-        <TableHeaderRow showSortingControls />
-        <TableEditRow />
-        <TableEditColumn showDeleteCommand />
-        <PagingPanel />
-        <Toolbar />
-        <SearchPanel />
-      </Grid>,
-      <Dialog open={this.state.open} onClose={this.handleClose}>
+      <Griddle
+        data={this.props.authors}
+        plugins={[plugins.LocalPlugin]}
+        components={{
+          SettingsToggle: () => <span />
+        }}
+        styleConfig={styleConfig}
+        pageProperties={{
+          currentPage,
+          pageSize
+        }}
+      >
+        <RowDefinition>
+          <ColumnDefinition id="name" title="Name" />
+          <ColumnDefinition id="gender" title="Gender" />
+          <ColumnDefinition id="birthday" title="Birthday" />
+          <ColumnDefinition id="born" title="Born" />
+          <ColumnDefinition id="kind" title="Kind" />
+          <ColumnDefinition id="description" title="Description" />
+          <ColumnDefinition
+            id="action"
+            title=" "
+            customComponent={getCellAction}
+          />
+        </RowDefinition>
+      </Griddle>,
+      <Dialog
+        open={this.state.open}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
         <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -101,18 +106,10 @@ class AuthorDataTable extends Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={this.handleClose}
-            color="secondary"
-            variant="contained"
-          >
+          <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          <Button
-            onClick={this.handleDelete}
-            color="primary"
-            variant="contained"
-          >
+          <Button onClick={this.handleDelete} color="primary" autoFocus>
             Delete
           </Button>
         </DialogActions>

@@ -1,63 +1,46 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Griddle, {
+  RowDefinition,
+  ColumnDefinition,
+  plugins
+} from "griddle-react";
+
 import {
-  Grid,
-  Table,
-  TableHeaderRow,
-  TableEditRow,
-  TableEditColumn
-} from "@devexpress/dx-react-grid-material-ui";
-import { EditingState } from "@devexpress/dx-react-grid";
-import {
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  Button
+  DialogActions
 } from "@material-ui/core";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 import { books } from "../../actions";
-
-const getRowId = row => row.id;
+import { styleConfig } from "../layout/DataTableStyles";
 
 class BookDataTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
-      open: "",
-      columns: [
-        { name: "title", title: "Title" },
-        { name: "author", title: "Author" },
-        { name: "category", title: "Category" },
-        { name: "description", title: "Description" }
-      ]
+      currentPage: 1,
+      pageSize: 5,
+      index: "",
+      open: ""
     };
-
-    this.commitChanges = this.commitChanges.bind(this);
-  }
-
-  commitChanges({ deleted }) {
-    let rows = this.props.books;
-
-    if (deleted) {
-      const deletedSet = new Set(deleted);
-      rows = rows.filter(row => deletedSet.has(row.id));
-      let rowId = rows[0].id;
-      this.setState({ id: rowId });
-      this.handleClickOpen();
-    }
   }
 
   handleDelete = () => {
-    this.props.deleteBook(this.state.id);
     this.setState({ open: false });
+    let index = this.state.index;
+    let book = this.props.books[index];
+    this.props.deleteBook(book.id);
   };
 
-  handleClickOpen = () => {
+  handleClickOpen = array => {
     this.setState({
-      open: true
+      open: true,
+      index: array.griddleKey
     });
   };
 
@@ -66,16 +49,62 @@ class BookDataTable extends Component {
   };
 
   render() {
-    const { columns } = this.state;
+    const getCellAction = array => {
+      let index = array.griddleKey;
+      let book = this.props.books[index];
+      console.log(book);
+      let btn =
+        book.free === "free" ? (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => this.handleClickOpen(array)}
+          >
+            <DeleteForeverIcon />
+          </Button>
+        ) : (
+          <Button variant="contained" color="secondary" disabled>
+            <DeleteForeverIcon />
+          </Button>
+        );
+      return btn;
+    };
+
+    const { currentPage, pageSize } = this.state;
+
+    const data = this.props.books;
+
     return [
-      <Grid columns={columns} rows={this.props.books} getRowId={getRowId}>
-        <EditingState onCommitChanges={this.commitChanges} />
-        <Table />
-        <TableHeaderRow />
-        <TableEditRow />
-        <TableEditColumn showDeleteCommand />
-      </Grid>,
-      <Dialog open={this.state.open} onClose={this.handleClose}>
+      <Griddle
+        data={data}
+        plugins={[plugins.LocalPlugin]}
+        components={{
+          SettingsToggle: () => <span />
+        }}
+        styleConfig={styleConfig}
+        pageProperties={{
+          currentPage,
+          pageSize
+        }}
+      >
+        <RowDefinition>
+          <ColumnDefinition id="title" title="Title" />
+          <ColumnDefinition id="author" title="Author" />
+          <ColumnDefinition id="category" title="Category" />
+          <ColumnDefinition id="description" title="Description" />
+          <ColumnDefinition
+            id="action"
+            title=" "
+            customComponent={getCellAction}
+          />
+        </RowDefinition>
+      </Griddle>,
+      <Dialog
+        open={this.state.open}
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
         <DialogTitle id="alert-dialog-title">{"Delete"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -83,18 +112,10 @@ class BookDataTable extends Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={this.handleClose}
-            color="secondary"
-            variant="contained"
-          >
+          <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          <Button
-            onClick={this.handleDelete}
-            color="primary"
-            variant="contained"
-          >
+          <Button onClick={this.handleDelete} color="primary" autoFocus>
             Delete
           </Button>
         </DialogActions>
